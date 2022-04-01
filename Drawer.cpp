@@ -124,7 +124,7 @@ void Drawer::draw_line(const Point &first, const Point &second, char filled_symb
 	//std::cout << "left_x = " << left_x << " right_x = " << right_x << '\n';
 
 	const std::size_t  left_column = get_column_from_x(left_x);
-	const std::size_t right_column = get_column_from_x(right_x);
+	const std::size_t right_column = get_column_from_x(right_x) + 1u;
 	//std::cout << "left_column = " << left_column << " right_column = " << right_x << '\n';
 
 	assert(0u <= left_column && "Left column should not be negative!");
@@ -132,20 +132,46 @@ void Drawer::draw_line(const Point &first, const Point &second, char filled_symb
 	assert(left_column < m_columns && "Left column should be less than maximum column!");
 	assert(right_column <= m_columns && "Right column should not be greater than maximum column!");
 
-	Area_t area;
+	
 	const Point upper_point = (first.y() >  second.y()) ? first : second;
 	const Point lower_point = (first.y() <= second.y()) ? first : second;
 
-	//const double lower_y = (lower_point.y() > m_minimum_y) ? lower_point.y() : m_minimum_y;
-	//const double upper_y = (upper_point.y() <= m_minimum_y + m_range_y) ? upper_point.y() : m_minimum_x;
+	const double lower_y = (lower_point.y() > m_minimum_y) ? lower_point.y() : m_minimum_y;
+	const double upper_y = (upper_point.y() <= m_minimum_y + m_range_y) ? upper_point.y() : m_minimum_y + m_range_y;
 
+	const std::size_t upper_row = get_row_from_y(upper_y) + 1u;
+	const std::size_t lower_row = get_row_from_y(lower_y);
 
-	//std::cout << "x\t\ty\t\tcolumn\trow\n";
-	for (std::size_t column = left_column; column < right_column; ++column) {
-		const double y = f(m_area[column], first, second);
-		const std::size_t row = get_row_from_y(y);
+	const std::size_t length_row    = upper_row - lower_row;
+	const std::size_t length_column = right_column - left_column;
 
-		if (0u <= row && row < m_rows && 0u <= column && column < m_columns)
-			m_field[row][column] = filled_symbol;
+	Area_t area;
+	if (length_row > length_column) {
+		area.resize(length_row);
+		const double dx = (right_x - left_x) / static_cast<double>(length_row);
+		double current_x = left_x;
+
+		for (std::size_t index = 0u; index < length_row; ++index) {
+			area[index] = current_x;
+			current_x += dx;
+		}
+		for (std::size_t row = lower_row; row < upper_row; ++row) {
+			const double y = f(area[row], first, second);
+			const std::size_t column = get_column_from_x(area[row]);
+
+			if (0u <= column && column < m_columns)
+				m_field[row][column] = filled_symbol;
+		}
+
+	} else {
+
+		//std::cout << "x\t\ty\t\tcolumn\trow\n";
+		for (std::size_t column = left_column; column < right_column; ++column) {
+			const double y = f(m_area[column], first, second);
+			const std::size_t row = get_row_from_y(y);
+
+			if (0u <= row && row < m_rows && 0u <= column && column < m_columns)
+				m_field[row][column] = filled_symbol;
+		} 
 	}
 }

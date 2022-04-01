@@ -25,6 +25,7 @@ int main() {
 	const Point p3(22.0, 15.0);
 	const Point p4(10.0, 20.2);
 	const Point p5(3.0, 55.2);
+	const Point p6(1.0, 6.0);
 	const Point p11(2.0, 55.2);
 	const Point p12(6.0, 55.2);
 	const Point p13(10.0, 55.2);
@@ -39,7 +40,9 @@ int main() {
 	field.draw_line(p2,  p3, '*');
 	field.draw_line(p3,  p4, '*');
 	field.draw_line(p4,  p5, '*');
-	field.draw_line(p5,  p1, '*');
+	field.draw_line(p5,  p6, '*');
+	field.draw_line(p6,  p1, '*');
+
 	//field.draw_line(p12, p1, '6');
 	//field.draw_line(p13, p1, '7');
 	//field.draw_line(p14, p1, '8');
