@@ -16,40 +16,41 @@
 #include "Drawer.h"
 
 int main() {
-	Drawer field(24, 88, '*', '.', 0.0, 88.0, 0.0, 24.0);
+	Drawer field(24, 88, '*', '.', 0.0, 24.0, 0.0, 88.0);
 
-	//field.print_field();
-
-	const Point p1(2.0, 3.0);
+	const Point p1(2.0, 2.0);
 	const Point p2(15.0, 2.0);
 	const Point p3(22.0, 15.0);
 	const Point p4(10.0, 20.2);
 	const Point p5(3.0, 55.2);
-	const Point p6(1.0, 6.0);
-	const Point p11(2.0, 55.2);
-	const Point p12(6.0, 55.2);
-	const Point p13(10.0, 55.2);
-	const Point p14(14.0, 55.2);
-	const Point p15(18.0, 55.2);
-	const Point p16(22.0, 55.2);
+	const Point p6(1.0, 15.0);
 
-	//const Point px1(3.0, 3.0);
-	//const Point px2(9.0, 9.0);
-
-	field.draw_line(p1,  p2, '*');
-	field.draw_line(p2,  p3, '*');
-	field.draw_line(p3,  p4, '*');
-	field.draw_line(p4,  p5, '*');
-	field.draw_line(p5,  p6, '*');
-	field.draw_line(p6,  p1, '*');
-
-	//field.draw_line(p12, p1, '6');
-	//field.draw_line(p13, p1, '7');
-	//field.draw_line(p14, p1, '8');
-	//field.draw_line(p15, p1, '9');
-	//field.draw_line(p16, p1, '0');
-	//field.draw_line(px1, px2, 'x');
+	field.draw_line(p1, p2, '1');
+	field.draw_line(p2, p3, '2');
+	field.draw_line(p3, p4, '3');
+	field.draw_line(p4, p5, '4');
+	field.draw_line(p5, p6, '5');
+	field.draw_line(p6, p1, '6');
 	field.print_field();
+	std::cout << '\n';
+
+
+
+	Drawer field2(24, 88, '*', '.', 0.0, 24.0, 0.0, 88.0);
+	const Point p21(5.0, 5.0);
+	const Point p22(20.0, 5.0);
+	const Point p23(20.0, 20.0);
+	const Point p24(5.0, 20.0);
+
+	field2.draw_line(p21, p22, '1');
+	field2.draw_line(p22, p23, '2');
+	field2.draw_line(p23, p24, '3');
+	field2.draw_line(p24, p21, '4');
+	field2.print_field();
+	std::cout << '\n';
+
+
+
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

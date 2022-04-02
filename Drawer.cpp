@@ -91,10 +91,10 @@ void Drawer::create_definition_area() {
 }
 
 std::size_t Drawer::get_row_from_y(double y) const {
-	return (y - m_minimum_y) / m_range_y * m_rows;
+	return m_rows * (y - m_minimum_y) / m_range_y ;
 }
 std::size_t Drawer::get_column_from_x(double x) const {
-	return (x - m_minimum_x) / m_range_x * m_columns;
+	return m_columns * (x - m_minimum_x) / m_range_x;
 }
 
 bool are_equal(double left, double right) {
@@ -116,15 +116,15 @@ double f(double x, const Point& first, const Point& second) {
 }
 
 void Drawer::draw_line(const Point &first, const Point &second, char filled_symbol) {
-	const Point  left_point = (first.x() < second.x()) ? first : second;
+	const Point  left_point = (first.x() <  second.x()) ? first : second;
 	const Point right_point = (first.x() >= second.x()) ? first : second;
 
-	const double  left_x = (left_point.x() > m_minimum_x) ? left_point.x() : m_minimum_x;
+	const double  left_x = (left_point.x()  > m_minimum_x) ? left_point.x() : m_minimum_x;
 	const double right_x = (right_point.x() <= m_minimum_x + m_range_x) ? right_point.x() : m_minimum_x + m_range_x;
 	//std::cout << "left_x = " << left_x << " right_x = " << right_x << '\n';
 
 	const std::size_t  left_column = get_column_from_x(left_x);
-	const std::size_t right_column = get_column_from_x(right_x) + 1u;
+	const std::size_t right_column = get_column_from_x(right_x);
 	//std::cout << "left_column = " << left_column << " right_column = " << right_x << '\n';
 
 	assert(0u <= left_column && "Left column should not be negative!");
@@ -139,14 +139,17 @@ void Drawer::draw_line(const Point &first, const Point &second, char filled_symb
 	const double lower_y = (lower_point.y() > m_minimum_y) ? lower_point.y() : m_minimum_y;
 	const double upper_y = (upper_point.y() <= m_minimum_y + m_range_y) ? upper_point.y() : m_minimum_y + m_range_y;
 
-	const std::size_t upper_row = get_row_from_y(upper_y) + 1u;
+	const std::size_t upper_row = get_row_from_y(upper_y);
 	const std::size_t lower_row = get_row_from_y(lower_y);
 
-	const std::size_t length_row    = upper_row - lower_row;
-	const std::size_t length_column = right_column - left_column;
+	const std::size_t length_row    = upper_row - lower_row + 1u;
+	const std::size_t length_column = right_column - left_column + 1u;
 
-	Area_t area;
-	if (length_row > length_column) {
+	std::cout << "x\t\ty\t\tcolumn\trow\n";
+	//if (length_row > length_column) {
+	if (std::abs(first.y() - second.y()) > std::abs(first.x() - second.x())) {
+		std::cout << "vertical:\n";
+		Area_t area;
 		area.resize(length_row);
 		const double dx = (right_x - left_x) / static_cast<double>(length_row);
 		double current_x = left_x;
@@ -155,21 +158,22 @@ void Drawer::draw_line(const Point &first, const Point &second, char filled_symb
 			area[index] = current_x;
 			current_x += dx;
 		}
-		for (std::size_t row = lower_row; row < upper_row; ++row) {
+		for (std::size_t row = 0; row < length_row; ++row) {
 			const double y = f(area[row], first, second);
 			const std::size_t column = get_column_from_x(area[row]);
 
-			if (0u <= column && column < m_columns)
-				m_field[row][column] = filled_symbol;
+			std::cout << area[row] << "\t\t" << y << "\t\t" << column << '\t' << row + lower_row << '\n';
+			if (0u <= column && column < m_columns && 0u <= lower_row + row && lower_row + row < m_rows)
+				m_field[lower_row + row][column] = filled_symbol;
 		}
 
 	} else {
-
-		//std::cout << "x\t\ty\t\tcolumn\trow\n";
-		for (std::size_t column = left_column; column < right_column; ++column) {
+		std::cout << "horizontal:\n";
+		for (std::size_t column = left_column; column <= right_column; ++column) {
 			const double y = f(m_area[column], first, second);
 			const std::size_t row = get_row_from_y(y);
 
+			std::cout << m_area[column] << "\t\t" << y << "\t\t" << column << '\t' << row << '\n';
 			if (0u <= row && row < m_rows && 0u <= column && column < m_columns)
 				m_field[row][column] = filled_symbol;
 		} 
