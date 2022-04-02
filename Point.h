@@ -1,4 +1,7 @@
 #pragma once
+
+#include <iostream>
+
 /// <summary>
 /// Stores two coordinates.
 /// </summary>
@@ -14,5 +17,7 @@ public:
 
 	double x() const;
 	double y() const;
+
+	friend std::ostream& operator<<(std::ostream& out, const Point& object);
 };
 

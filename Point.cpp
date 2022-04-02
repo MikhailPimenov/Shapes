@@ -17,3 +17,8 @@ double Point::y() const
 {
 	return m_y;
 }
+
+std::ostream& operator<<(std::ostream& out, const Point& object) {
+	out << "Point(" << object.m_x << ", " << object.m_y << ')';
+	return out;
+}

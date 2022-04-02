@@ -116,6 +116,8 @@ double f(double x, const Point& first, const Point& second) {
 }
 
 void Drawer::draw_line(const Point &first, const Point &second, char filled_symbol) {
+	std::cout << "first: " << first << "; second: " << second << '\n';
+	
 	const Point  left_point = (first.x() <  second.x()) ? first : second;
 	const Point right_point = (first.x() >= second.x()) ? first : second;
 
@@ -145,15 +147,18 @@ void Drawer::draw_line(const Point &first, const Point &second, char filled_symb
 	const std::size_t length_row    = upper_row - lower_row + 1u;
 	const std::size_t length_column = right_column - left_column + 1u;
 
+	const bool straight_order = ((first.x() - second.x()) * (first.y() - second.y()) > 0.0);
 	std::cout << "x\t\ty\t\tcolumn\trow\n";
-	//if (length_row > length_column) {
 	if (std::abs(first.y() - second.y()) > std::abs(first.x() - second.x())) {
+		std::cout << (straight_order ? "straight" : "reversed") << '\n';
 		std::cout << "vertical:\n";
 		Area_t area;
 		area.resize(length_row);
-		const double dx = (right_x - left_x) / static_cast<double>(length_row);
-		double current_x = left_x;
-
+		
+		const double dx = (straight_order ? 1 : -1) * (right_x - left_x) / static_cast<double>(length_row);
+		double current_x = straight_order ? left_x : right_x;
+		
+		
 		for (std::size_t index = 0u; index < length_row; ++index) {
 			area[index] = current_x;
 			current_x += dx;
@@ -166,10 +171,9 @@ void Drawer::draw_line(const Point &first, const Point &second, char filled_symb
 			if (0u <= column && column < m_columns && 0u <= lower_row + row && lower_row + row < m_rows)
 				m_field[lower_row + row][column] = filled_symbol;
 		}
-
 	} else {
 		std::cout << "horizontal:\n";
-		for (std::size_t column = left_column; column <= right_column; ++column) {
+		for (std::size_t column = left_column; column < right_column; ++column) {
 			const double y = f(m_area[column], first, second);
 			const std::size_t row = get_row_from_y(y);
 
