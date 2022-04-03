@@ -93,6 +93,35 @@ void Drawer::create_definition_area() {
 std::size_t Drawer::get_row_from_y(double y) const {
 	return m_rows * (y - m_minimum_y) / m_range_y ;
 }
+
+double get_distance(const Point& a, const Point& b) {
+	return std::sqrt((a.x() - b.x()) * (a.x() - b.x()) + (a.y() - b.y()) * (a.y() - b.y()));
+}
+void Drawer::draw_circle(const Circle& circle, char filled_symbol) {
+	const double dx = m_range_x / static_cast<double>(m_columns);
+	const double dy = m_range_y / static_cast<double>(m_rows);
+	const double delta = get_distance(Point(dx, dy), Point(0.0, 0.0));
+
+	for (std::size_t row = 0u; row < m_rows; ++row) {
+		const double y = get_y_from_row(row);
+		
+		for (std::size_t column = 0u; column < m_columns; ++column) {
+			const double x = get_x_from_column(column);
+			const Point point(x, y);
+			const double distance = get_distance(circle.center(), point);
+			
+			if (circle.radius() - delta / 3.0 < distance && distance < circle.radius() + delta / 3.0) {
+				m_field[row][column] = filled_symbol;
+			}
+		}
+	}
+}
+double Drawer::get_x_from_column(std::size_t column) const {
+	return m_range_x * static_cast<double>(column) / static_cast<double>(m_columns);
+}
+double Drawer::get_y_from_row(std::size_t row) const {
+	return m_range_y * static_cast<double>(row) / static_cast<double>(m_rows);
+}
 std::size_t Drawer::get_column_from_x(double x) const {
 	return m_columns * (x - m_minimum_x) / m_range_x;
 }

@@ -4,6 +4,7 @@
 #include <vector>
 
 
+#include "Circle.h"
 #include "Point.h"
 
 using Field_t = std::vector<std::vector<char>>;
@@ -37,9 +38,13 @@ private:
 	void create_empty_field();
 	void create_definition_area();
 	std::size_t get_row_from_y(double y) const;
+	double get_x_from_column(std::size_t column) const;
+	double get_y_from_row(std::size_t row) const;
+
 	std::size_t get_column_from_x(double x) const;
 
 public:
 	void draw_line(const Point &first, const Point &second, char filled_symbol = '*');
+	void draw_circle(const Circle& circle, char filled_symbol = '*');
 };
 
