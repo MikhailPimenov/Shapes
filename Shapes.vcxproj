@@ -139,17 +139,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AngularShape.cpp" />
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="Drawer.cpp" />
     <ClCompile Include="IShape.cpp" />
     <ClCompile Include="Point.cpp" />
     <ClCompile Include="Shapes.cpp" />
+    <ClCompile Include="Triangle.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AngularShape.h" />
     <ClInclude Include="Circle.h" />
     <ClInclude Include="Drawer.h" />
     <ClInclude Include="IShape.h" />
     <ClInclude Include="Point.h" />
+    <ClInclude Include="Triangle.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

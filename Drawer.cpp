@@ -1,18 +1,52 @@
 #include "Drawer.h"
 
+
+
+namespace DrawerDefaults {
+	const char filled_symbol  = '*';
+	const char empty_symbol   = '.';
+
+	const std::size_t rows    = 0u;
+	const std::size_t columns = 0u;
+
+	const double minimum_x    = 0.0;
+	const double range_x      = 0.0;
+
+	const double minimum_y    = 0.0;
+	const double range_y      = 0.0;
+
+	const double ratio        = 0.55;
+}
+
+
+
 Drawer::Drawer() 
 	:
-	m_filled_symbol{ '*' }, 
-	m_empty_symbol{' '}, 
-	m_rows{27u}, 
-	m_columns{48u},
-	m_minimum_x{0.0},
-	m_range_x{16.0},
-	m_minimum_y{0.0},
-	m_range_y{9.0}
+	m_filled_symbol{ DrawerDefaults::filled_symbol },
+	m_empty_symbol{ DrawerDefaults::empty_symbol },
+	m_rows{ DrawerDefaults::rows },
+	m_columns{ DrawerDefaults::columns },
+	m_minimum_x{ DrawerDefaults::minimum_x },
+	m_range_x{ DrawerDefaults::range_x },
+	m_minimum_y{ DrawerDefaults::minimum_y },
+	m_range_y{ DrawerDefaults::range_y * DrawerDefaults::ratio }
 	
 {
+}
+
+Drawer::Drawer(std::size_t rows, std::size_t columns)
+	:
+	m_filled_symbol{ DrawerDefaults::filled_symbol },
+	m_empty_symbol{ DrawerDefaults::empty_symbol },
+	m_rows{ rows },
+	m_columns{ columns },
+	m_minimum_x{ DrawerDefaults::minimum_x },
+	m_range_x{ static_cast<double>(columns) * DrawerDefaults::ratio },
+	m_minimum_y{ DrawerDefaults::minimum_y },
+	m_range_y{ static_cast<double>(rows) }
+{
 	create_empty_field();
+	create_definition_area();
 }
 
 Drawer::Drawer(
@@ -37,6 +71,40 @@ Drawer::Drawer(
 {
 	create_empty_field();
 	create_definition_area();
+}
+
+Drawer::Drawer(Drawer&& that) 
+	: 
+	m_filled_symbol{ that.m_filled_symbol },
+	m_empty_symbol{ that.m_empty_symbol },
+	m_rows{ that.m_rows },
+	m_columns{ that.m_columns },
+	m_minimum_x{ that.m_minimum_x },
+	m_range_x{ that.m_range_x },
+	m_minimum_y{ that.m_minimum_y },
+	m_range_y{ that.m_range_y },
+	m_field{ std::move(that.m_field) } {
+	std::cout << "Drawer(Drawer&&):\n";
+
+}
+
+Drawer& Drawer::operator=(Drawer&& that) {
+	std::cout << "operator=(Drawer&&):\n";
+
+	if (this == &that)
+		return *this;
+
+	m_filled_symbol = that.m_filled_symbol;
+	m_empty_symbol  = that.m_empty_symbol;
+	m_rows          = that.m_rows;
+	m_columns       = that.m_columns;
+	m_minimum_x     = that.m_minimum_x;
+	m_range_x       = that.m_range_x;
+	m_minimum_y     = that.m_minimum_y;
+	m_range_y       = that.m_range_y;
+	m_field         = std::move(that.m_field);
+
+	return *this;
 }
 
 //Drawer::Drawer(
@@ -73,6 +141,10 @@ void Drawer::print_field() const {
 	}
 }
 
+Drawer::operator bool() const {
+	return m_field.size();
+}
+
 void Drawer::create_empty_field() {
 	m_field.resize(m_rows);
 	for (auto& line : m_field)
@@ -97,7 +169,7 @@ std::size_t Drawer::get_row_from_y(double y) const {
 double get_distance(const Point& a, const Point& b) {
 	return std::sqrt((a.x() - b.x()) * (a.x() - b.x()) + (a.y() - b.y()) * (a.y() - b.y()));
 }
-void Drawer::draw_circle(const Circle& circle, char filled_symbol) {
+void Drawer::draw_circle(const Point& center, double radius, char filled_symbol) {
 	const double dx = m_range_x / static_cast<double>(m_columns);
 	const double dy = m_range_y / static_cast<double>(m_rows);
 	const double delta = get_distance(Point(dx, dy), Point(0.0, 0.0));
@@ -108,9 +180,9 @@ void Drawer::draw_circle(const Circle& circle, char filled_symbol) {
 		for (std::size_t column = 0u; column < m_columns; ++column) {
 			const double x = get_x_from_column(column);
 			const Point point(x, y);
-			const double distance = get_distance(circle.center(), point);
+			const double distance = get_distance(center, point);
 			
-			if (circle.radius() - delta / 3.0 < distance && distance < circle.radius() + delta / 3.0) {
+			if (radius - delta / 3.0 < distance && distance < radius + delta / 3.0) {
 				m_field[row][column] = filled_symbol;
 			}
 		}

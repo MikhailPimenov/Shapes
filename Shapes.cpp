@@ -12,23 +12,59 @@
 
 
 #include <iostream>
+#include <memory>
+#include <vector>
 
+#include "Circle.h"
 #include "Drawer.h"
+#include "Triangle.h"
 
-int main() {
-	Drawer field4(24, 88, '*', '.', 0.0, 24.0, 0.0, 48.0);
+using Shapes_t = std::vector<std::unique_ptr<IShape>>;
 
-	field4.draw_circle(Circle(Point(24.0, 12.0), 10.0));
-	field4.print_field();
+void print_shapes(const Shapes_t& shapes) {
+	Drawer field(24u, 88u);
+	for (const auto& shape : shapes) {
+		shape->print_info();
+		//shape->draw(24u, 88u);
+		shape->draw(field);
+	}
+	field.print_field();
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+int main() {
+	//Drawer field4(24, 100, '*', '.', 0.0, 24.0, 0.0, 55.0);
+	//Drawer field4(24, 100);
+
+	//field4.draw_circle(Point(24.0, 12.0), 10.0);
+	//field4.print_field();
+
+
+	//Triangle t;
+	//t.initialize_field(20ull, 30ull);
+	//t.initialize_field(25ull, 35ull);
+	//t.initialize_field(25ull, 35ull);
+	//Triangle t;
+	//t.print_info();
+	//t.draw(24u, 88u);
+
+
+	//Circle c(Point(10.0, 10.0), 5.0);
+	//c.print_info();
+	//c.draw(24u, 88u);
+
+	Shapes_t shapes;
+	shapes.push_back(
+		std::make_unique<Triangle>(
+			Point(28.0, 8.0), 
+			Point(22.0, 16.0), 
+			Point(30.0, 16.0)
+			)
+	);
+	shapes.push_back(std::make_unique<Circle>(Point(10.0, 10.0), 5.0));
+	shapes.push_back(std::make_unique<Triangle>());
+	shapes.push_back(std::make_unique<Circle>(Point(10.0, 15.0), 4.0));
+
+
+	print_shapes(shapes);
+}
