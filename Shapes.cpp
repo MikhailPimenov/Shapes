@@ -37,7 +37,7 @@ int main() {
 	//Drawer field4(24, 100);
 
 	//field4.draw_circle(Point(24.0, 12.0), 10.0);
-	//field4.print_field();
+	//field4.print_field();//
 
 
 	//Triangle t;
@@ -67,4 +67,57 @@ int main() {
 
 
 	print_shapes(shapes);
+
+	Drawer field5(24ull, 88ull);
+	const Point center(25.0, 12.0);
+
+	
+	//field5.draw_line(center, Point(12.0, 0.0));
+	//field5.draw_line(center, Point(8.0, 0.0));
+	//field5.draw_line(center, Point(0.0, 0.0));
+
+	//field5.draw_line(center, Point(48.0, 12.0));
+	// 
+	// 
+	//field5.draw_line(Point(120.0, 120.0), Point(100.0, 10000.0));
+	//field5.draw_line(Point(120.0, 120.0), Point(10000.0, 100.0));
+	
+	//field5.draw_line(Point(-120.0, 120.0), Point(-100.0, 10000.0));
+	//field5.draw_line(Point(-120.0, 120.0), Point(-10000.0, 100.0));
+
+	//field5.draw_line(Point(-120.0, -120.0), Point(-100.0, -10000.0));
+	//field5.draw_line(Point(-120.0, -120.0), Point(-10000.0, -100.0));
+
+	//field5.draw_line(Point(120.0, -120.0), Point(100.0, -10000.0));
+	//field5.draw_line(Point(120.0, -120.0), Point(10000.0, -100.0));
+
+	//field5.draw_line(center, Point(9999.0, 9999.0));
+	//field5.draw_line(center, Point(9999.0, 99999.0));
+	//field5.draw_line(center, Point(9999.0, 999999.0));
+
+	//field5.draw_line(Point(999.0, 2999.0), center);
+	//field5.draw_line(Point(999.0, 29999.0), center);
+	//field5.draw_line(Point(999.0, 299999.0), center);
+
+
+	//field5.draw_line(center, Point(-9999.0, 9999.0));
+	//field5.draw_line(center, Point(-9999.0, 99999.0));
+	//field5.draw_line(center, Point(-9999.0, 999999.0));
+
+	//field5.draw_line(Point(-999.0, 2999.0), center);
+	//field5.draw_line(Point(-999.0, 29999.0), center);
+	//field5.draw_line(Point(-999.0, 299999.0), center);
+
+
+
+	//field5.draw_line(center, Point(9999.0, -9999.0));
+	field5.draw_line(center, Point(9999.0, -99999.0));
+	field5.draw_line(center, Point(9999.0, -999999.0));
+
+	//field5.draw_line(Point(999.0, -2999.0), center);
+	field5.draw_line(Point(999.0, -29999.0), center);
+	field5.draw_line(Point(999.0, -299999.0), center);
+
+
+	field5.print_field();
 }
