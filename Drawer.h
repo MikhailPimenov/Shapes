@@ -3,25 +3,14 @@
 #include <iostream>
 #include <vector>
 
+#include "AngularShape.h"
+#include "Circle.h"
+#include "IShape.h"
 #include "Point.h"
 
 
 using Field_t = std::vector<std::vector<char>>;
 using Area_t  = std::vector<double>;
-
-//namespace DrawerDefaults {
-//	const char filled_symbol = '*';
-//	const char empty_symbol = '.';
-//
-//	const std::size_t rows = 0u;
-//	const std::size_t columns = 0u;
-//
-//	const double minimum_x = 0.0;
-//	const double range_x = 0.0;
-//
-//	const double minimum_y = 0.0;
-//	const double range_y = 0.0;
-//}
 
 
 namespace DrawerDefaults {
@@ -77,7 +66,14 @@ private:
 	std::size_t get_column_from_x(double x) const;
 
 public:
-	void draw_line(const Point &first, const Point &second, char filled_symbol = '*');
-	void draw_circle(const Point &center, double radius, char filled_symbol = '*');
+	void draw_line(const Point &first, const Point &second, char filled_symbol = '*'); // make private
+	void draw_circle(const Point &center, double radius, char filled_symbol = '*');    // remove
+
+
+
+	void draw_angularshape(const AngularShape& shape);
+	void draw_circle(const Circle& circle);
+
+	void draw(const IShape& shape);
 };
 

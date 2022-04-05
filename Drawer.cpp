@@ -15,7 +15,9 @@ namespace DrawerDefaults {
 	const double minimum_y    = 0.0;
 	const double range_y      = 0.0;
 
-	const double ratio        = 0.55;
+	//  ratio to make vertical and horizontal gap between points in console 
+	//  equal to each other (to make circle look like circle, but not like ellips)
+	const double ratio        = 0.55;  
 }
 
 
@@ -60,14 +62,14 @@ Drawer::Drawer(
 	double range_x 
 )
 	:
-	m_filled_symbol{filled_symbol},
-	m_empty_symbol{empty_symbol},
-	m_rows{rows},
-	m_columns{columns},
-	m_minimum_x{minimum_x},
-	m_range_x{range_x},
-	m_minimum_y{minimum_y},
-	m_range_y{range_y}
+	m_filled_symbol{ filled_symbol },
+	m_empty_symbol{ empty_symbol },
+	m_rows{ rows },
+	m_columns{ columns },
+	m_minimum_x{ minimum_x },
+	m_range_x{ range_x },
+	m_minimum_y{ minimum_y },
+	m_range_y{ range_y }
 {
 	create_empty_field();
 	create_definition_area();
@@ -166,6 +168,28 @@ std::size_t Drawer::get_row_from_y(double y) const {
 	return m_rows * (y - m_minimum_y) / m_range_y ;
 }
 
+void Drawer::draw_angularshape(const AngularShape& shape) {
+	const std::size_t size     = shape.vertices().size();
+	const Vertices_t& vertices = shape.vertices();
+
+	for (std::size_t index = 0ull; index < size; ++index)
+		draw_line(vertices.at(index), vertices.at((index + 1ull) % size));
+}
+
+void Drawer::draw(const IShape& shape) {
+	const Circle* circle = dynamic_cast<const Circle*>(&shape);
+	if (circle) {
+		draw_circle(*circle);
+		return;
+	}
+
+	const AngularShape* angular = dynamic_cast<const AngularShape*>(&shape);
+	if (angular) {
+		draw_angularshape(*angular);
+		return;
+	}
+}
+
 double get_distance(const Point& a, const Point& b) {
 	return std::sqrt((a.x() - b.x()) * (a.x() - b.x()) + (a.y() - b.y()) * (a.y() - b.y()));
 }
@@ -188,6 +212,10 @@ void Drawer::draw_circle(const Point& center, double radius, char filled_symbol)
 		}
 	}
 }
+void Drawer::draw_circle(const Circle& circle) {
+	draw_circle(circle.center(), circle.radius(), '*');
+}
+
 double Drawer::get_x_from_column(std::size_t column) const {
 	return m_range_x * static_cast<double>(column) / static_cast<double>(m_columns);
 }
@@ -204,7 +232,7 @@ bool are_equal(double left, double right) {
 	//std::cout << ((left > right) ? (left - right < epsilon) : (right - left < epsilon)) << '\n';
 	return (left > right) ? (left - right < epsilon) : (right - left < epsilon);
 }
-double f(double x, const Point& first, const Point& second) {
+static double f(double x, const Point& first, const Point& second) {
 	//  TODO: Consider zero-division 
 	if (are_equal(first.x(), second.x())) {
 		//std::cout << "Zero-division prevented!\n";

@@ -25,8 +25,8 @@ void print_shapes(const Shapes_t& shapes) {
 	Drawer field(24u, 88u);
 	for (const auto& shape : shapes) {
 		shape->print_info();
-		//shape->draw(24u, 88u);
-		shape->draw(field);
+		field.draw(*shape);
+
 	}
 	field.print_field();
 }
@@ -63,7 +63,7 @@ int main() {
 	);
 	shapes.push_back(std::make_unique<Circle>(Point(10.0, 10.0), 5.0));
 	shapes.push_back(std::make_unique<Triangle>());
-	shapes.push_back(std::make_unique<Circle>(Point(10.0, 15.0), 4.0));
+	shapes.push_back(std::make_unique<Circle>(Point(5.0, 15.0), 4.0));
 
 
 	print_shapes(shapes);

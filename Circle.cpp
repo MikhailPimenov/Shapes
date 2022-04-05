@@ -12,21 +12,22 @@ Circle::Circle(const Point& center, double radius) : m_center { center }, m_radi
 Circle::~Circle() {
 }
 
-const Circle& Circle::draw(std::size_t rows, std::size_t columns) const {
-	Drawer field(rows, columns, '*', '.', 0.0, static_cast<double>(rows), 0.0, static_cast<double>(columns));
-	draw(field);
-	return *this;
-}
-
-const Circle& Circle::draw(Drawer& field) const {
-	field.draw_circle(m_center, m_radius);
-	return *this;
-}
-
-void Circle::show() const {
-	if (m_field)
-		m_field.print_field();
-}
+//const Circle& Circle::draw(std::size_t rows, std::size_t columns) {
+//	Drawer field(rows, columns, '*', '.', 0.0, static_cast<double>(rows), 0.0, static_cast<double>(columns));
+//	draw(field);
+//	return *this;
+//}
+//
+//const Circle& Circle::draw(Drawer& field) const {
+//	field.draw_circle(m_center, m_radius);
+//	return *this;
+//}
+//
+//void Circle::show() const {
+//	std::cout << "Circle::show():\n";
+//	if (m_field)
+//		m_field.print_field();
+//}
 
 void Circle::print_info() const {
 }
