@@ -29,6 +29,9 @@ namespace DrawerDefaults {
 	const extern double ratio;
 }
 
+
+
+
 class Drawer {
 private:
 	char m_filled_symbol;
@@ -43,17 +46,18 @@ private:
 	double m_range_y;
 
 	Field_t m_field;
-	Area_t  m_area; // TODO: remove it
+	Area_t  m_area_x;
+	Area_t  m_area_y;
+
+	struct Range {
+		std::size_t m_begin;
+		std::size_t m_end;
+	};
 public:
 	Drawer();
 	Drawer(std::size_t rows, std::size_t columns);
 	//Drawer(std::size_t rows, std::size_t columns, char filled_symbol, char empty_symbol);
 	Drawer(std::size_t rows, std::size_t columns, char filled_symbol, char empty_symbol, double minimum_y, double range_y, double minimum_x, double range_x);
-
-	Drawer(Drawer&& that);
-	Drawer& operator=(Drawer&& that);
-
-	operator bool() const;
 
 	void print_field() const;
 private:
@@ -69,6 +73,19 @@ public:
 	void draw_line(const Point &first, const Point &second, char filled_symbol = '*'); // make private
 	void draw_circle(const Point &center, double radius, char filled_symbol = '*');    // remove
 
+	void draw_horizontal_line(const Point& left, const Point& right, char filled_symbol);
+	void draw_vertical_line(const Point& left, const Point& right, char filled_symbol);
+
+	Range get_begin_and_end_rows(const Point& first, const Point& second);
+	Range get_begin_and_end_columns(const Point& first, const Point& second);
+
+	//Range get_range(double first, double second, std::size_t length);
+	Range get_range(
+		double first, 
+		double second, 
+		std::size_t length, 
+		std::size_t(Drawer::*get_discrete_from_continuous)(double) const
+	);
 
 
 	void draw_angularshape(const AngularShape& shape);
