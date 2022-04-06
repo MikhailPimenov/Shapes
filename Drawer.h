@@ -12,10 +12,6 @@
 using Field_t = std::vector<std::vector<char>>;
 using Area_t  = std::vector<double>;
 
-namespace std {
-	using ssize_t = signed long long int;
-}
-
 namespace DrawerDefaults {
 	const extern char filled_symbol;
 	const extern char empty_symbol;
@@ -30,7 +26,7 @@ namespace DrawerDefaults {
 	const extern double range_y;
 
 	const extern double ratio;
-}
+};
 
 
 
@@ -57,20 +53,18 @@ private:
 		std::size_t m_end;
 	};
 public:
-	//Drawer();
 	Drawer(std::size_t rows, std::size_t columns);
-	//Drawer(std::size_t rows, std::size_t columns, char filled_symbol, char empty_symbol);
 	Drawer(std::size_t rows, std::size_t columns, char filled_symbol, char empty_symbol, double minimum_y, double range_y, double minimum_x, double range_x);
 
 	void print_field() const;
 private:
 	void create_empty_field();
 	void create_definition_area();
-	//std::size_t get_row_from_y(double y) const;
+	std::size_t get_row_from_y(double y) const;
 	double get_x_from_column(std::size_t column) const;
 	double get_y_from_row(std::size_t row) const;
 
-	//std::size_t get_column_from_x(double x) const;
+	std::size_t get_column_from_x(double x) const;
 public:
 	void draw_line(const Point &first, const Point &second, char filled_symbol = '*'); // make private
 	void draw_circle(const Point &center, double radius, char filled_symbol = '*');    // remove
@@ -81,14 +75,23 @@ public:
 	Range get_begin_and_end_rows(const Point& first, const Point& second);
 	Range get_begin_and_end_columns(const Point& first, const Point& second);
 
-	//Range get_range(double first, double second, std::size_t length);
-	Range get_discrete_range(double first,
+
+	std::size_t get_discrete_in_range(
+		double continuous,
+		double minimum,
+		double range,
+		std::size_t length,
+		std::size_t(Drawer::* get_discrete_from_continuous)(double) const
+	);
+
+	Range get_range(
+		double first,
 		double second,
 		double minimum,
-		double continuous_range,
-		std::size_t length) const;
-	std::ssize_t get_discrete_from_continuous(double continuous, double minimum, double range, std::size_t length) const;
-
+		double range,
+		std::size_t length,
+		std::size_t(Drawer::* get_discrete_from_continuous)(double) const
+	);
 
 
 	void draw_angularshape(const AngularShape& shape);

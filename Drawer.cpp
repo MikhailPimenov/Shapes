@@ -21,21 +21,6 @@ namespace DrawerDefaults {
 }
 
 
-
-//Drawer::Drawer() 
-//	:
-//	m_filled_symbol{ DrawerDefaults::filled_symbol },
-//	m_empty_symbol{ DrawerDefaults::empty_symbol },
-//	m_rows{ DrawerDefaults::rows },
-//	m_columns{ DrawerDefaults::columns },
-//	m_minimum_x{ DrawerDefaults::minimum_x },
-//	m_range_x{ DrawerDefaults::range_x },
-//	m_minimum_y{ DrawerDefaults::minimum_y },
-//	m_range_y{ DrawerDefaults::range_y * DrawerDefaults::ratio }
-//	
-//{
-//}
-
 Drawer::Drawer(std::size_t rows, std::size_t columns)
 	:
 	m_filled_symbol{ DrawerDefaults::filled_symbol },
@@ -93,7 +78,7 @@ void Drawer::create_empty_field() {
 void Drawer::create_definition_area() {
 	m_area_x.resize(m_columns);
 
-	const double dx = m_range_x / static_cast<double>(m_columns);
+	const double dx  = m_range_x / static_cast<double>(m_columns);
 	double current_x = m_minimum_x;
 	for (std::size_t column = 0ull; column < m_columns; ++column) {
 		m_area_x[column] = current_x;
@@ -102,7 +87,7 @@ void Drawer::create_definition_area() {
 
 	m_area_y.resize(m_rows);
 
-	const double dy = m_range_y / static_cast<double>(m_rows);
+	const double dy  = m_range_y / static_cast<double>(m_rows);
 	double current_y = m_minimum_y;
 	for (std::size_t row = 0ull; row < m_rows; ++row) {
 		m_area_y[row] = current_y;
@@ -110,14 +95,8 @@ void Drawer::create_definition_area() {
 	}
 }
 
-//std::size_t Drawer::get_row_from_y(double y) const {
-//	const long long int signed_result = m_rows * (y - m_minimum_y) / m_range_y;
-//	if (signed_result <= 0ll)
-//		return 0ull;
-//	return signed_result;
-//}
-std::ssize_t Drawer::get_discrete_from_continuous(double continuous, double minimum, double range, std::size_t length) const {
-	return static_cast<std::ssize_t>(length) * (continuous - minimum) / range;
+std::size_t Drawer::get_row_from_y(double y) const {
+	return m_rows * (y - m_minimum_y) / m_range_y ;
 }
 
 void Drawer::draw_angularshape(const AngularShape& shape) {
@@ -142,7 +121,7 @@ void Drawer::draw(const IShape& shape) {
 	}
 }
 
-double get_distance(const Point& a, const Point& b) {
+static double get_distance(const Point& a, const Point& b) {
 	return std::sqrt((a.x() - b.x()) * (a.x() - b.x()) + (a.y() - b.y()) * (a.y() - b.y()));
 }
 void Drawer::draw_circle(const Point& center, double radius, char filled_symbol) {
@@ -174,14 +153,12 @@ double Drawer::get_x_from_column(std::size_t column) const {
 double Drawer::get_y_from_row(std::size_t row) const {
 	return m_range_y * static_cast<double>(row) / static_cast<double>(m_rows);
 }
-//std::size_t Drawer::get_column_from_x(double x) const {
-//	return m_columns * (x - m_minimum_x) / m_range_x;
-//}
+std::size_t Drawer::get_column_from_x(double x) const {
+	return m_columns * (x - m_minimum_x) / m_range_x;
+}
 
-bool are_equal(double left, double right) {
-	//std::cout << "are_equal():  left = " << left << " right = " << right << ' ';
+static bool are_equal(double left, double right) {
 	static const double epsilon = 1e-12;
-	//std::cout << ((left > right) ? (left - right < epsilon) : (right - left < epsilon)) << '\n';
 	return (left > right) ? (left - right < epsilon) : (right - left < epsilon);
 }
 static double get_y_from_x(double x, const Point& first, const Point& second) {
@@ -190,7 +167,6 @@ static double get_y_from_x(double x, const Point& first, const Point& second) {
 	}
 
 	const double tan_alpha = (second.y() - first.y()) / (second.x() - first.x());
-
 	return tan_alpha * (x - first.x()) + first.y();
 }
 static double get_x_from_y(double y, const Point& first, const Point& second) {
@@ -199,49 +175,61 @@ static double get_x_from_y(double y, const Point& first, const Point& second) {
 	}
 
 	const double tan_alpha = (second.x() - first.x()) / (second.y() - first.y());
-
 	return tan_alpha * (y - first.y()) + first.x();
 }
 
+std::size_t Drawer::get_discrete_in_range(
+	double continuous,
+	double minimum,
+	double range,
+	std::size_t length,
+	std::size_t(Drawer::* get_discrete_from_continuous)(double) const
+) {
 
+	if (continuous < minimum)
+		return 0ull;
+	
+	if (continuous > minimum + range)
+		return length;
+	
+	return (this->*get_discrete_from_continuous)(continuous);
+}
 
-Drawer::Range Drawer::get_discrete_range(
+Drawer::Range Drawer::get_range(
 	double first, 
 	double second,
 	double minimum,
-	double continuous_range,
-	std::size_t length
-) const {
+	double range,
+	std::size_t length, 
+	std::size_t (Drawer::*get_discrete_from_continuous)(double) const
+) {
 	const double lower   = first <  second ? first : second;
 	const double greater = first >= second ? first : second;
 
-	const std::ssize_t lower_discrete = get_discrete_from_continuous(
-		lower,
+	Range result;	
+	result.m_begin = get_discrete_in_range(
+		lower, 
 		minimum,
-		continuous_range,
-		length
+		range,
+		length,
+		get_discrete_from_continuous
 	);
-
-	const std::ssize_t greater_discrete = get_discrete_from_continuous(
+	result.m_end = get_discrete_in_range(
 		greater,
 		minimum,
-		continuous_range,
-		length
+		range,
+		length,
+		get_discrete_from_continuous
 	);
-	
-	Range result;
-	result.m_begin = lower_discrete   >= 0ll    ? lower_discrete   : 0ll;
-	result.m_end   = greater_discrete <= length ? greater_discrete : length;
+
 
 	return result;
 }
-
 Drawer::Range Drawer::get_begin_and_end_rows(const Point& first, const Point& second) {
-	return get_discrete_range(first.y(), second.y(), m_minimum_y, m_range_y, m_rows);
+	return get_range(first.y(), second.y(), m_minimum_y, m_range_y, m_rows, &Drawer::get_row_from_y);
 }
-
 Drawer::Range Drawer::get_begin_and_end_columns(const Point& first, const Point& second) {
-	return get_discrete_range(first.x(), second.x(), m_minimum_x, m_range_x, m_columns);
+	return get_range(first.x(), second.x(), m_minimum_x, m_range_x, m_columns, &Drawer::get_column_from_x);
 }
 
 void Drawer::draw_horizontal_line(const Point& first, const Point& second, char filled_symbol) {
@@ -249,9 +237,9 @@ void Drawer::draw_horizontal_line(const Point& first, const Point& second, char 
 
 	for (std::size_t column = column_range.m_begin; column < column_range.m_end; ++column) {
 		const double y = get_y_from_x(m_area_x[column], first, second);
-		const std::size_t row = get_discrete_from_continuous(y, m_minimum_y, m_range_y, m_rows);
+		const std::size_t row = get_row_from_y(y);
 
-		if (0u <= row && row < m_rows && 0u <= column && column < m_columns)  //  get rid of column comparisson 
+		if (0u <= row && row < m_rows) 
 			m_field[row][column] = filled_symbol;
 	}
 }
@@ -260,10 +248,9 @@ void Drawer::draw_vertical_line(const Point& first, const Point& second, char fi
 
 	for (std::size_t row = row_range.m_begin; row < row_range.m_end; ++row) {
 		const double x = get_x_from_y(m_area_y[row], first, second);
-		const std::size_t column = get_discrete_from_continuous(x, m_minimum_x, m_range_x, m_columns);
+		const std::size_t column = get_column_from_x(x);
 
-		//std::cout << m_area[column] << "\t\t" << y << "\t\t" << column << '\t' << row << '\n';
-		if (0u <= column && column < m_columns && 0u <= row && row < m_rows)  //  get rid of row comparisson 
+		if (0u <= column && column < m_columns) 
 			m_field[row][column] = filled_symbol;
 	}
 }
@@ -283,72 +270,3 @@ void Drawer::draw_line(const Point& first, const Point& second, char filled_symb
 
 	draw_horizontal_line(first, second, filled_symbol);
 }
-
-//void Drawer::draw_line(const Point &first, const Point &second, char filled_symbol) {
-//	std::cout << "first: " << first << "; second: " << second << '\n';
-//	
-//	const Point  left_point = (first.x() <  second.x()) ? first : second;
-//	const Point right_point = (first.x() >= second.x()) ? first : second;
-//
-//	const double  left_x = (left_point.x()  > m_minimum_x) ? left_point.x() : m_minimum_x;
-//	const double right_x = (right_point.x() <= m_minimum_x + m_range_x) ? right_point.x() : m_minimum_x + m_range_x;
-//	//std::cout << "left_x = " << left_x << " right_x = " << right_x << '\n';
-//
-//	const std::size_t  left_column = get_column_from_x(left_x);
-//	const std::size_t right_column = get_column_from_x(right_x);
-//	//std::cout << "left_column = " << left_column << " right_column = " << right_x << '\n';
-//
-//	//assert(0u <= left_column && "Left column should not be negative!");
-//	//assert(0u <= right_column && "Right column should not be negative!");
-//	//assert(left_column < m_columns && "Left column should be less than maximum column!");
-//	//assert(right_column <= m_columns && "Right column should not be greater than maximum column!");
-//
-//	
-//	const Point upper_point = (first.y() >  second.y()) ? first : second;
-//	const Point lower_point = (first.y() <= second.y()) ? first : second;
-//
-//	const double lower_y = (lower_point.y() > m_minimum_y) ? lower_point.y() : m_minimum_y;
-//	const double upper_y = (upper_point.y() <= m_minimum_y + m_range_y) ? upper_point.y() : m_minimum_y + m_range_y;
-//
-//	const std::size_t upper_row = get_row_from_y(upper_y);
-//	const std::size_t lower_row = get_row_from_y(lower_y);
-//
-//	const std::size_t length_row    = upper_row - lower_row + 1u;
-//	const std::size_t length_column = right_column - left_column + 1u;
-//
-//	const bool straight_order = ((first.x() - second.x()) * (first.y() - second.y()) > 0.0);
-//	std::cout << "x\t\ty\t\tcolumn\trow\n";
-//	if (std::abs(first.y() - second.y()) > std::abs(first.x() - second.x())) {
-//		std::cout << (straight_order ? "straight" : "reversed") << '\n';
-//		std::cout << "vertical:\n";
-//		Area_t area;
-//		area.resize(length_row);
-//		
-//		const double dx = (straight_order ? 1 : -1) * (right_x - left_x) / static_cast<double>(length_row);
-//		double current_x = straight_order ? left_x : right_x;
-//		
-//		
-//		for (std::size_t index = 0u; index < length_row; ++index) {
-//			area[index] = current_x;
-//			current_x += dx;
-//		}
-//		for (std::size_t row = 0; row < length_row; ++row) {
-//			const double y = get_y_from_x(area[row], first, second);
-//			const std::size_t column = get_column_from_x(area[row]);
-//
-//			std::cout << area[row] << "\t\t" << y << "\t\t" << column << '\t' << row + lower_row << '\n';
-//			if (0u <= column && column < m_columns && 0u <= lower_row + row && lower_row + row < m_rows)
-//				m_field[lower_row + row][column] = filled_symbol;
-//		}
-//	} else {
-//		std::cout << "horizontal:\n";
-//		for (std::size_t column = left_column; column < right_column; ++column) {
-//			const double y = get_y_from_x(m_area[column], first, second);
-//			const std::size_t row = get_row_from_y(y);
-//
-//			std::cout << m_area[column] << "\t\t" << y << "\t\t" << column << '\t' << row << '\n';
-//			if (0u <= row && row < m_rows && 0u <= column && column < m_columns)
-//				m_field[row][column] = filled_symbol;
-//		} 
-//	}
-//}
