@@ -17,7 +17,7 @@ namespace DrawerDefaults {
 
 	//  ratio to make vertical and horizontal gaps between points in console 
 	//  equal to each other (to make circle look like circle, but not like ellips)
-	const double ratio        = 0.575;  
+	const double ratio        = 0.575;
 }
 
 
@@ -95,57 +95,74 @@ void Drawer::create_definition_area() {
 	}
 }
 
-std::size_t Drawer::get_row_from_y(double y) const {
-	return m_rows * (y - m_minimum_y) / m_range_y ;
-}
 
-void Drawer::draw_angularshape(const AngularShape& shape) {
+
+
+void Drawer::draw_angularshape(const AngularShape& shape, char symbol) {
 	const std::size_t size     = shape.vertices().size();
 	const Vertices_t& vertices = shape.vertices();
 
 	for (std::size_t index = 0ull; index < size; ++index)
-		draw_line(vertices.at(index), vertices.at((index + 1ull) % size));
+		draw_line(vertices.at(index), vertices.at((index + 1ull) % size), symbol);
 }
 
-void Drawer::draw(const IShape& shape) {
+void Drawer::draw(const IShape& shape, char filled_symbol) {
 	const Circle* circle = dynamic_cast<const Circle*>(&shape);
 	if (circle) {
-		draw_circle(*circle);
+		draw_circle(*circle, filled_symbol);
 		return;
 	}
 
 	const AngularShape* angular = dynamic_cast<const AngularShape*>(&shape);
 	if (angular) {
-		draw_angularshape(*angular);
+		draw_angularshape(*angular, filled_symbol);
 		return;
 	}
+}
+void Drawer::draw(const IShape& shape) {
+	draw(shape, m_filled_symbol);
 }
 
 static double get_distance(const Point& a, const Point& b) {
 	return std::sqrt((a.x() - b.x()) * (a.x() - b.x()) + (a.y() - b.y()) * (a.y() - b.y()));
 }
-void Drawer::draw_circle(const Point& center, double radius, char filled_symbol) {
+double Drawer::get_delta() const {
 	const double dx = m_range_x / static_cast<double>(m_columns);
 	const double dy = m_range_y / static_cast<double>(m_rows);
-	const double delta = get_distance(Point(dx, dy), Point(0.0, 0.0));
+	return get_distance(Point(dx, dy), Point(0.0, 0.0));
+}
+static bool is_between(double x, double lower, double greater) {
+	return ((lower < x) && (x < greater));
+}
+
+
+
+
+void Drawer::draw_circle(const Circle& circle, char filled_symbol) {
+	const double delta = get_delta();
+	const Point& center = circle.center();
+	const double radius = circle.radius();
 
 	for (std::size_t row = 0u; row < m_rows; ++row) {
 		const double y = get_y_from_row(row);
-		
+
 		for (std::size_t column = 0u; column < m_columns; ++column) {
 			const double x = get_x_from_column(column);
 			const Point point(x, y);
 			const double distance = get_distance(center, point);
-			
-			if (radius - delta / 3.0 < distance && distance < radius + delta / 3.0) {
+
+			if (is_between(distance, radius - delta / 2.0, radius + delta / 2.0)) {
 				m_field[row][column] = filled_symbol;
 			}
 		}
 	}
 }
-void Drawer::draw_circle(const Circle& circle) {
-	draw_circle(circle.center(), circle.radius(), '*');
-}
+
+
+
+
+
+
 
 double Drawer::get_x_from_column(std::size_t column) const {
 	return m_range_x * static_cast<double>(column) / static_cast<double>(m_columns);
@@ -155,6 +172,9 @@ double Drawer::get_y_from_row(std::size_t row) const {
 }
 std::size_t Drawer::get_column_from_x(double x) const {
 	return m_columns * (x - m_minimum_x) / m_range_x;
+}
+std::size_t Drawer::get_row_from_y(double y) const {
+	return m_rows * (y - m_minimum_y) / m_range_y ;
 }
 
 static bool are_equal(double left, double right) {
@@ -177,61 +197,48 @@ static double get_x_from_y(double y, const Point& first, const Point& second) {
 	const double tan_alpha = (second.x() - first.x()) / (second.y() - first.y());
 	return tan_alpha * (y - first.y()) + first.x();
 }
+Drawer::Range Drawer::get_begin_and_end_rows(const Point& first, const Point& second) {
+	const double lower   = first.y() <  second.y() ? first.y() : second.y();
+	const double greater = first.y() >= second.y() ? first.y() : second.y();
 
-std::size_t Drawer::get_discrete_in_range(
-	double continuous,
-	double minimum,
-	double range,
-	std::size_t length,
-	std::size_t(Drawer::* get_discrete_from_continuous)(double) const
-) {
+	Range result;
+	if (lower < m_minimum_y)
+		result.m_begin = 0ull;
+	else if (lower > m_minimum_y + m_range_y)
+		result.m_begin = m_rows;
+	else
+		result.m_begin = get_row_from_y(lower);
 
-	if (continuous < minimum)
-		return 0ull;
-	
-	if (continuous > minimum + range)
-		return length;
-	
-	return (this->*get_discrete_from_continuous)(continuous);
-}
-
-Drawer::Range Drawer::get_range(
-	double first, 
-	double second,
-	double minimum,
-	double range,
-	std::size_t length, 
-	std::size_t (Drawer::*get_discrete_from_continuous)(double) const
-) {
-	const double lower   = first <  second ? first : second;
-	const double greater = first >= second ? first : second;
-
-	Range result;	
-	result.m_begin = get_discrete_in_range(
-		lower, 
-		minimum,
-		range,
-		length,
-		get_discrete_from_continuous
-	);
-	result.m_end = get_discrete_in_range(
-		greater,
-		minimum,
-		range,
-		length,
-		get_discrete_from_continuous
-	);
-
+	if (greater < m_minimum_y)
+		result.m_end = 0ull;
+	else if (greater > m_minimum_y + m_range_y)
+		result.m_end = m_rows;
+	else
+		result.m_end = get_row_from_y(greater);
 
 	return result;
 }
-Drawer::Range Drawer::get_begin_and_end_rows(const Point& first, const Point& second) {
-	return get_range(first.y(), second.y(), m_minimum_y, m_range_y, m_rows, &Drawer::get_row_from_y);
-}
 Drawer::Range Drawer::get_begin_and_end_columns(const Point& first, const Point& second) {
-	return get_range(first.x(), second.x(), m_minimum_x, m_range_x, m_columns, &Drawer::get_column_from_x);
-}
+	const double lower = first.x() < second.x() ? first.x() : second.x();
+	const double greater = first.x() >= second.x() ? first.x() : second.x();
 
+	Range result;
+	if (lower < m_minimum_x)
+		result.m_begin = 0ull;
+	else if (lower > m_minimum_x + m_range_x)
+		result.m_begin = m_columns;
+	else
+		result.m_begin = get_column_from_x(lower);
+
+	if (greater < m_minimum_x)
+		result.m_end = 0ull;
+	else if (greater > m_minimum_x + m_range_x)
+		result.m_end = m_columns;
+	else
+		result.m_end = get_column_from_x(greater);
+
+	return result;
+}
 void Drawer::draw_horizontal_line(const Point& first, const Point& second, char filled_symbol) {
 	const Range column_range = get_begin_and_end_columns(first, second);
 
@@ -254,14 +261,12 @@ void Drawer::draw_vertical_line(const Point& first, const Point& second, char fi
 			m_field[row][column] = filled_symbol;
 	}
 }
-
 bool is_line_vertical(const Point &first, const Point &second) {
 	return std::abs(first.y() - second.y()) > std::abs(first.x() - second.x());
 }
 bool is_line_horizontal(const Point& first, const Point& second) {
 	return !is_line_vertical(first, second);
 }
-
 void Drawer::draw_line(const Point& first, const Point& second, char filled_symbol) {
 	if (is_line_vertical(first, second)) {
 		draw_vertical_line(first, second, filled_symbol);

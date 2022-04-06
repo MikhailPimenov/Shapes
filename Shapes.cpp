@@ -110,13 +110,13 @@ int main() {
 
 
 
-	//field5.draw_line(center, Point(9999.0, -9999.0));
-	field5.draw_line(center, Point(9999.0, -99999.0));
-	field5.draw_line(center, Point(2999.0, -999.0));
+	//field5.draw_line(center, Point(9999.0, -9999.0), '*');
+	//field5.draw_line(center, Point(9999.0, -99999.0), '*');
+	//field5.draw_line(center, Point(2999.0, -999.0), '*');
 
-	//field5.draw_line(Point(999.0, -2999.0), center);
-	field5.draw_line(Point(999.0, -29999.0), center);
-	field5.draw_line(Point(9999.0, -299.0), center);
+	//field5.draw_line(Point(999.0, -2999.0), center, '*');
+	//field5.draw_line(Point(999.0, -29999.0), center, '*');
+	//field5.draw_line(Point(9999.0, -2099.0), center, '*');
 
 
 	field5.print_field();

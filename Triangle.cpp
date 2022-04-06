@@ -1,6 +1,6 @@
 #include "Triangle.h"
 
-Triangle::Triangle() : AngularShape{ {Point(0.0, 0.0), Point(5.0, 0.0), Point(5.0, 5.0) } } {
+Triangle::Triangle() : AngularShape{ {Point(2.5, 0.0), Point(0.0, 4.33), Point(5.0, 4.33) } } {
 	
 }
 
