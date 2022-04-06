@@ -1,20 +1,16 @@
 #include "Point.h"
 
-Point::Point() : m_x {0.0}, m_y {0.0}
-{
+Point::Point() : m_x { 0.0 }, m_y { 0.0 } {
 }
 
-Point::Point(double x, double y) : m_x {x}, m_y {y}
-{
+Point::Point(double x, double y) : m_x { x }, m_y { y } {
 }
 
-double Point::x() const
-{
+double Point::x() const {
 	return m_x;
 }
 
-double Point::y() const
-{
+double Point::y() const {
 	return m_y;
 }
 

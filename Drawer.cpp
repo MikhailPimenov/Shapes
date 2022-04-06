@@ -3,8 +3,8 @@
 
 
 namespace DrawerDefaults {
-	const char filled_symbol  = '*';
-	const char empty_symbol   = '.';
+	const char filled_symbol  = '.';
+	const char empty_symbol   = ' ';
 
 	const std::size_t rows    = 0u;
 	const std::size_t columns = 0u;
@@ -132,7 +132,7 @@ double Drawer::get_delta() const {
 	return get_distance(Point(dx, dy), Point(0.0, 0.0));
 }
 static bool is_between(double x, double lower, double greater) {
-	return ((lower < x) && (x < greater));
+	return (lower < x) && (x < greater);
 }
 
 
@@ -151,16 +151,12 @@ void Drawer::draw_circle(const Circle& circle, char filled_symbol) {
 			const Point point(x, y);
 			const double distance = get_distance(center, point);
 
-			if (is_between(distance, radius - delta / 2.0, radius + delta / 2.0)) {
+			if (is_between(distance, radius - delta / 4.0, radius + delta / 4.0)) {
 				m_field[row][column] = filled_symbol;
 			}
 		}
 	}
 }
-
-
-
-
 
 
 
@@ -176,7 +172,6 @@ std::size_t Drawer::get_column_from_x(double x) const {
 std::size_t Drawer::get_row_from_y(double y) const {
 	return m_rows * (y - m_minimum_y) / m_range_y ;
 }
-
 static bool are_equal(double left, double right) {
 	static const double epsilon = 1e-12;
 	return (left > right) ? (left - right < epsilon) : (right - left < epsilon);

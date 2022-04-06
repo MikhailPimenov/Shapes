@@ -74,7 +74,7 @@ private:
 	std::size_t get_row_from_y(double y) const;
 	std::size_t get_column_from_x(double x) const;
 
-public:
+
 	void draw_line(const Point &first, const Point &second, char filled_symbol); //  private
 	
 	void draw_horizontal_line(const Point& left, const Point& right, char filled_symbol); //  private  

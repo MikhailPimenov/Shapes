@@ -33,25 +33,6 @@ void print_shapes(const Shapes_t& shapes) {
 
 
 int main() {
-	//Drawer field4(24, 100, '*', '.', 0.0, 24.0, 0.0, 55.0);
-	//Drawer field4(24, 100);
-
-	//field4.draw_circle(Point(24.0, 12.0), 10.0);
-	//field4.print_field();//
-
-
-	//Triangle t;
-	//t.initialize_field(20ull, 30ull);
-	//t.initialize_field(25ull, 35ull);
-	//t.initialize_field(25ull, 35ull);
-	//Triangle t;
-	//t.print_info();
-	//t.draw(24u, 88u);
-
-
-	//Circle c(Point(10.0, 10.0), 5.0);
-	//c.print_info();
-	//c.draw(24u, 88u);
 
 	Shapes_t shapes;
 	shapes.push_back(
@@ -65,6 +46,13 @@ int main() {
 	shapes.push_back(std::make_unique<Triangle>());
 	shapes.push_back(std::make_unique<Circle>(Point(5.0, 15.0), 4.0));
 
+	shapes.push_back(
+		std::make_unique<Triangle>(
+			Point(15.0, 10.0),
+			Point(30.0, 10.0),
+			Point(20.0, 22.0)
+			)
+	);
 
 	print_shapes(shapes);
 
@@ -119,5 +107,5 @@ int main() {
 	//field5.draw_line(Point(9999.0, -2099.0), center, '*');
 
 
-	field5.print_field();
+	//field5.print_field();
 }
