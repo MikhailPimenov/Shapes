@@ -17,5 +17,6 @@ public:
 	virtual ~AngularShape() override;
 
 	const Vertices_t& vertices() const;
+	void print_vertices() const;
 };
 

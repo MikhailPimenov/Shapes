@@ -139,9 +139,13 @@ static bool is_between(double x, double lower, double greater) {
 
 
 void Drawer::draw_circle(const Circle& circle, char filled_symbol) {
-	const double delta = get_delta();
-	const Point& center = circle.center();
+	const double delta  = get_delta();
+	const Point center(
+		get_x_from_column(get_column_from_x(circle.center().x())),
+		get_y_from_row(get_row_from_y(circle.center().y()))
+	);
 	const double radius = circle.radius();
+	
 
 	for (std::size_t row = 0u; row < m_rows; ++row) {
 		const double y = get_y_from_row(row);
@@ -151,7 +155,7 @@ void Drawer::draw_circle(const Circle& circle, char filled_symbol) {
 			const Point point(x, y);
 			const double distance = get_distance(center, point);
 
-			if (is_between(distance, radius - delta / 4.0, radius + delta / 4.0)) {
+			if (is_between(distance, radius - delta / 3.0, radius + delta / 3.0)) {
 				m_field[row][column] = filled_symbol;
 			}
 		}
@@ -209,7 +213,7 @@ Drawer::Range Drawer::get_begin_and_end_rows(const Point& first, const Point& se
 	else if (greater > m_minimum_y + m_range_y)
 		result.m_end = m_rows;
 	else
-		result.m_end = get_row_from_y(greater);
+		result.m_end = get_row_from_y(greater) + 1ull;
 
 	return result;
 }
@@ -230,7 +234,7 @@ Drawer::Range Drawer::get_begin_and_end_columns(const Point& first, const Point&
 	else if (greater > m_minimum_x + m_range_x)
 		result.m_end = m_columns;
 	else
-		result.m_end = get_column_from_x(greater);
+		result.m_end = get_column_from_x(greater) + 1ull;
 
 	return result;
 }

@@ -14,9 +14,6 @@ Triangle::~Triangle() {
 
 void Triangle::print_info() const {
 	std::cout << "Triangle(";
-
-	for (auto iterator = m_vertices.cbegin(); iterator != m_vertices.cend() - 1; ++iterator)
-		std::cout << *iterator << ", ";
-
-	std::cout << m_vertices.back() << ")\n";
+	print_vertices();
+	std::cout << ")\n";
 }
