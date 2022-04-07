@@ -3,8 +3,8 @@
 
 #include <vector>
 
-#include "IShape.h"
-#include "Point.h"
+#include "../IShape.h"
+#include "../../Point/Point.h"
 
 using Vertices_t = std::vector<Point>;
 

@@ -61,7 +61,7 @@ Drawer::Drawer(
 }
 
 
-void Drawer::print_field() const {
+void Drawer::print() const {
 	for (const auto& line : m_field) {
 		for (char symbol : line)
 			std::cout << symbol;
@@ -123,23 +123,26 @@ void Drawer::draw(const IShape& shape) {
 	draw(shape, m_filled_symbol);
 }
 
-static double get_distance(const Point& a, const Point& b) {
-	return std::sqrt((a.x() - b.x()) * (a.x() - b.x()) + (a.y() - b.y()) * (a.y() - b.y()));
-}
+//static double get_distance(const Point& a, const Point& b) {
+	//return std::sqrt((a.x() - b.x()) * (a.x() - b.x()) + (a.y() - b.y()) * (a.y() - b.y()));
+//}
+
 double Drawer::get_delta() const {
-	const double dx = m_range_x / static_cast<double>(m_columns);
-	const double dy = m_range_y / static_cast<double>(m_rows);
-	return get_distance(Point(dx, dy), Point(0.0, 0.0));
-}
-static bool is_between(double x, double lower, double greater) {
-	return (lower < x) && (x < greater);
+	return Math::get_delta(m_range_x, m_columns, m_range_y, m_rows);
 }
 
 
+//static bool is_between(double x, double lower, double greater) {
+//	return (lower < x) && (x < greater);
+//}
 
 
 void Drawer::draw_circle(const Circle& circle, char filled_symbol) {
 	const double delta  = get_delta();
+	
+	//  Binding the center of the circle to one of existing symbols on the field,
+	//  this will exclude situation when the circle is slightly shifted which causes
+	//  different width of the circumference and even lack of symmetry
 	const Point center(
 		get_x_from_column(get_column_from_x(circle.center().x())),
 		get_y_from_row(get_row_from_y(circle.center().y()))
@@ -153,49 +156,83 @@ void Drawer::draw_circle(const Circle& circle, char filled_symbol) {
 		for (std::size_t column = 0u; column < m_columns; ++column) {
 			const double x = get_x_from_column(column);
 			const Point point(x, y);
-			const double distance = get_distance(center, point);
+			const double distance = Math::get_distance(center, point);
 
-			if (is_between(distance, radius - delta / 3.0, radius + delta / 3.0)) {
+			if (Math::is_between(distance, radius - delta / 3.0, radius + delta / 3.0)) {
 				m_field[row][column] = filled_symbol;
 			}
 		}
 	}
 }
 
+//double get_continuous_from_discrete_coordinate(
+//	std::size_t discrete_coordinate,
+//	std::size_t discrete_range,
+//	double continuous_range
+//) {
+//	return continuous_range *
+//		   static_cast<double>(discrete_coordinate) /
+//		   static_cast<double>(discrete_range);
+//}
 
+//std::size_t get_discrete_from_continuous_coordinate(
+//	double continuous_coordinate,
+//	std::size_t discrete_range, 
+//	double continuous_range,
+//	double continuous_minimum
+//) {
+//	const double shifted = continuous_coordinate - continuous_minimum;
+//	const double ratio   = shifted / continuous_range;
+//	return std::round(static_cast<double>(discrete_range) * ratio);
+//}
 
+//double Drawer::get_x_from_column(std::size_t column) const {
+	//return m_range_x * static_cast<double>(column) / static_cast<double>(m_columns);
+//}
+//double Drawer::get_y_from_row(std::size_t row) const {
+	//return m_range_y * static_cast<double>(row) / static_cast<double>(m_rows);
+//}
+//std::size_t Drawer::get_column_from_x(double x) const {
+	//return std::round(static_cast<double>(m_columns) * (x - m_minimum_x) / m_range_x);
+//}
+//std::size_t Drawer::get_row_from_y(double y) const {
+//	return std::round(static_cast<double>(m_rows) * (y - m_minimum_y) / m_range_y);
+//}
 double Drawer::get_x_from_column(std::size_t column) const {
-	return m_range_x * static_cast<double>(column) / static_cast<double>(m_columns);
+	return Math::get_continuous_from_discrete_coordinate(
+		column,
+		m_columns,
+		m_range_x
+	);
 }
 double Drawer::get_y_from_row(std::size_t row) const {
-	return m_range_y * static_cast<double>(row) / static_cast<double>(m_rows);
+	return Math::get_continuous_from_discrete_coordinate(
+		row,
+		m_rows,
+		m_range_y
+	);
 }
 std::size_t Drawer::get_column_from_x(double x) const {
-	return m_columns * (x - m_minimum_x) / m_range_x;
+	return Math::get_discrete_from_continuous_coordinate(
+		x,
+		m_columns,
+		m_range_x,
+		m_minimum_x
+	);
 }
 std::size_t Drawer::get_row_from_y(double y) const {
-	return m_rows * (y - m_minimum_y) / m_range_y ;
+	return Math::get_discrete_from_continuous_coordinate(
+		y,
+		m_rows,
+		m_range_y,
+		m_minimum_y
+	);
 }
-static bool are_equal(double left, double right) {
-	static const double epsilon = 1e-12;
-	return (left > right) ? (left - right < epsilon) : (right - left < epsilon);
-}
-static double get_y_from_x(double x, const Point& first, const Point& second) {
-	if (are_equal(first.x(), second.x())) {
-		return first.y();
-	}
+//static bool are_equal(double left, double right) {
+//	static const double epsilon = 1e-12;
+//	return (left > right) ? (left - right < epsilon) : (right - left < epsilon);
+//}
 
-	const double tan_alpha = (second.y() - first.y()) / (second.x() - first.x());
-	return tan_alpha * (x - first.x()) + first.y();
-}
-static double get_x_from_y(double y, const Point& first, const Point& second) {
-	if (are_equal(first.y(), second.y())) {
-		return first.x();
-	}
-
-	const double tan_alpha = (second.x() - first.x()) / (second.y() - first.y());
-	return tan_alpha * (y - first.y()) + first.x();
-}
 Drawer::Range Drawer::get_begin_and_end_rows(const Point& first, const Point& second) {
 	const double lower   = first.y() <  second.y() ? first.y() : second.y();
 	const double greater = first.y() >= second.y() ? first.y() : second.y();
@@ -238,11 +275,31 @@ Drawer::Range Drawer::get_begin_and_end_columns(const Point& first, const Point&
 
 	return result;
 }
+
+//static double get_y_from_x_for_line(double x, const Point& first, const Point& second) {
+//	//  Zero-division case, when line is vertical 
+//	if (are_equal(first.x(), second.x())) {
+//		return first.y();
+//	}
+//
+//	const double tangent_alpha = (second.y() - first.y()) / (second.x() - first.x());
+//	return tangent_alpha * (x - first.x()) + first.y();
+//}
+//static double get_x_from_y_for_line(double y, const Point& first, const Point& second) {
+//	//  Zero-division case, when line is horizontal
+//	if (are_equal(first.y(), second.y())) {
+//		return first.x();
+//	}
+//
+//	const double cotangent_alpha = (second.x() - first.x()) / (second.y() - first.y());
+//	return cotangent_alpha * (y - first.y()) + first.x();
+//}
+
 void Drawer::draw_horizontal_line(const Point& first, const Point& second, char filled_symbol) {
 	const Range column_range = get_begin_and_end_columns(first, second);
 
 	for (std::size_t column = column_range.m_begin; column < column_range.m_end; ++column) {
-		const double y = get_y_from_x(m_area_x[column], first, second);
+		const double y = Math::get_y_from_x_for_line(m_area_x[column], first, second);
 		const std::size_t row = get_row_from_y(y);
 
 		if (0u <= row && row < m_rows) 
@@ -253,21 +310,21 @@ void Drawer::draw_vertical_line(const Point& first, const Point& second, char fi
 	const Range row_range = get_begin_and_end_rows(first, second);
 
 	for (std::size_t row = row_range.m_begin; row < row_range.m_end; ++row) {
-		const double x = get_x_from_y(m_area_y[row], first, second);
+		const double x = Math::get_x_from_y_for_line(m_area_y[row], first, second);
 		const std::size_t column = get_column_from_x(x);
 
 		if (0u <= column && column < m_columns) 
 			m_field[row][column] = filled_symbol;
 	}
 }
-bool is_line_vertical(const Point &first, const Point &second) {
-	return std::abs(first.y() - second.y()) > std::abs(first.x() - second.x());
-}
-bool is_line_horizontal(const Point& first, const Point& second) {
-	return !is_line_vertical(first, second);
-}
+//bool is_line_vertical(const Point &first, const Point &second) {
+//	return std::abs(first.y() - second.y()) > std::abs(first.x() - second.x());
+//}
+//bool is_line_horizontal(const Point& first, const Point& second) {
+//	return !is_line_vertical(first, second);
+//}
 void Drawer::draw_line(const Point& first, const Point& second, char filled_symbol) {
-	if (is_line_vertical(first, second)) {
+	if (Math::is_line_vertical(first, second)) {
 		draw_vertical_line(first, second, filled_symbol);
 		return;
 	}

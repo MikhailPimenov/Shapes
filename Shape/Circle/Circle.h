@@ -1,7 +1,7 @@
 #pragma once
 
-#include "IShape.h"
-#include "Point.h"
+#include "../IShape.h"
+#include "../../Point/Point.h"
 
 class Circle : public IShape {
 private:

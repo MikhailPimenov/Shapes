@@ -1,12 +1,12 @@
 #pragma once
 
 #include "AngularShape.h"
-#include "Drawer.h"
-#include "Point.h"
+#include "../../Point/Point.h"
 
 class Triangle : public AngularShape {
 public:
-	Triangle();
+	//Triangle();
+	Triangle(const Point& upper = Point(0.0, 0.0), double side = 5.0);
 	Triangle(const Point &a, const Point &b, const Point &c);
 	virtual ~Triangle() override;
 
