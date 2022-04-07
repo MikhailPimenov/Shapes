@@ -30,7 +30,9 @@ namespace DrawerDefaults {
 
 
 
-
+/// <summary>
+/// 
+/// </summary>
 class Drawer {
 private:
 	char m_filled_symbol;

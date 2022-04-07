@@ -155,14 +155,16 @@ double Drawer::get_x_from_column(std::size_t column) const {
 	return Math::get_continuous_from_discrete_coordinate(
 		column,
 		m_columns,
-		m_range_x
+		m_range_x,
+		m_minimum_x
 	);
 }
 double Drawer::get_y_from_row(std::size_t row) const {
 	return Math::get_continuous_from_discrete_coordinate(
 		row,
 		m_rows,
-		m_range_y
+		m_range_y,
+		m_minimum_y
 	);
 }
 std::size_t Drawer::get_column_from_x(double x) const {

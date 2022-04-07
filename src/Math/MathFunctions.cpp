@@ -18,10 +18,8 @@ namespace Math {
 	}
 
 	bool are_equal(double left, double right, double epsilon) {
-		//static const double epsilon = 1e-12;
 		return (left > right) ? (left - right < epsilon) : (right - left < epsilon);
 	}
-
 
 	double get_y_from_x_for_line(double x, const Point& first, const Point& second) {
 		//  Zero-division case, when line is vertical 
@@ -56,13 +54,14 @@ namespace Math {
 	double get_continuous_from_discrete_coordinate(
 		std::size_t discrete_coordinate,
 		std::size_t discrete_range,
-		double continuous_range
+		double continuous_range,
+		double continuous_minimum
 	) {
 		const double ratio =
 			static_cast<double>(discrete_coordinate) /
 			static_cast<double>(discrete_range);
 
-		return continuous_range * ratio;
+		return continuous_range * ratio + continuous_minimum;
 	}
 
 
@@ -73,7 +72,13 @@ namespace Math {
 		double continuous_minimum
 	) {
 		const double shifted = continuous_coordinate - continuous_minimum;
+		if (shifted < 0.0)
+			return 0ull;
+
 		const double ratio = shifted / continuous_range;
+		if (ratio > 1.0)
+			return discrete_range;
+
 		return std::round(static_cast<double>(discrete_range) * ratio);
 	}
 };
