@@ -17,8 +17,8 @@ namespace Math {
 		return get_distance(Point(dx, dy), Point(0.0, 0.0));
 	}
 
-	bool are_equal(double left, double right) {
-		static const double epsilon = 1e-12;
+	bool are_equal(double left, double right, double epsilon) {
+		//static const double epsilon = 1e-12;
 		return (left > right) ? (left - right < epsilon) : (right - left < epsilon);
 	}
 

@@ -139,29 +139,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Math\MathFunctions.cpp" />
-    <ClCompile Include="Shape\AngularShape\AngularShape.cpp" />
-    <ClCompile Include="Shape\Circle\Circle.cpp" />
-    <ClCompile Include="Drawer\Drawer.cpp" />
-    <ClCompile Include="Shape\IShape.cpp" />
-    <ClCompile Include="Point\Point.cpp" />
-    <ClCompile Include="Shape\AngularShape\Rectangle.cpp" />
-    <ClCompile Include="Shapes.cpp" />
-    <ClCompile Include="Shape\AngularShape\Square.cpp" />
-    <ClCompile Include="Shape\AngularShape\Triangle.cpp" />
-    <ClCompile Include="Shape\AngularShape\Star.cpp" />
+    <ClCompile Include="src\Math\MathFunctions.cpp" />
+    <ClCompile Include="src\Shape\AngularShape\AngularShape.cpp" />
+    <ClCompile Include="src\Shape\Circle\Circle.cpp" />
+    <ClCompile Include="src\Drawer\Drawer.cpp" />
+    <ClCompile Include="src\Shape\IShape.cpp" />
+    <ClCompile Include="src\Point\Point.cpp" />
+    <ClCompile Include="src\Shape\AngularShape\Rectangle.cpp" />
+    <ClCompile Include="src\Shapes.cpp" />
+    <ClCompile Include="src\Shape\AngularShape\Square.cpp" />
+    <ClCompile Include="src\Shape\AngularShape\Triangle.cpp" />
+    <ClCompile Include="src\Shape\AngularShape\Star.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Math\MathFunctions.h" />
-    <ClInclude Include="Shape\AngularShape\AngularShape.h" />
-    <ClInclude Include="Shape\Circle\Circle.h" />
-    <ClInclude Include="Drawer\Drawer.h" />
-    <ClInclude Include="Shape\IShape.h" />
-    <ClInclude Include="Point\Point.h" />
-    <ClInclude Include="Shape\AngularShape\Rectangle.h" />
-    <ClInclude Include="Shape\AngularShape\Square.h" />
-    <ClInclude Include="Shape\AngularShape\Triangle.h" />
-    <ClInclude Include="Shape\AngularShape\Star.h" />
+    <ClInclude Include="src\Math\MathFunctions.h" />
+    <ClInclude Include="src\Shape\AngularShape\AngularShape.h" />
+    <ClInclude Include="src\Shape\Circle\Circle.h" />
+    <ClInclude Include="src\Drawer\Drawer.h" />
+    <ClInclude Include="src\Shape\IShape.h" />
+    <ClInclude Include="src\Point\Point.h" />
+    <ClInclude Include="src\Shape\AngularShape\Rectangle.h" />
+    <ClInclude Include="src\Shape\AngularShape\Square.h" />
+    <ClInclude Include="src\Shape\AngularShape\Triangle.h" />
+    <ClInclude Include="src\Shape\AngularShape\Star.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

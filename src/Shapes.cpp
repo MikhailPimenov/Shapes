@@ -36,7 +36,6 @@ void print_shapes(const Shapes_t& shapes) {
 
 
 int main() {
-
 	Shapes_t shapes;
 	
 	shapes.push_back(std::make_unique<Triangle>(

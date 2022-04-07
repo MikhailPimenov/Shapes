@@ -23,14 +23,14 @@ namespace DrawerDefaults {
 
 Drawer::Drawer(std::size_t rows, std::size_t columns)
 	:
-	m_filled_symbol{ DrawerDefaults::filled_symbol },
-	m_empty_symbol{ DrawerDefaults::empty_symbol },
-	m_rows{ rows },
-	m_columns{ columns },
-	m_minimum_x{ DrawerDefaults::minimum_x },
-	m_range_x{ static_cast<double>(columns) * DrawerDefaults::ratio },
-	m_minimum_y{ DrawerDefaults::minimum_y },
-	m_range_y{ static_cast<double>(rows) }
+	m_filled_symbol { DrawerDefaults::filled_symbol },
+	m_empty_symbol  { DrawerDefaults::empty_symbol },
+	m_rows          { rows },
+	m_columns       { columns },
+	m_minimum_x     { DrawerDefaults::minimum_x },
+	m_range_x       { static_cast<double>(columns) * DrawerDefaults::ratio },
+	m_minimum_y     { DrawerDefaults::minimum_y },
+	m_range_y       { static_cast<double>(rows) }
 {
 	create_empty_field();
 	create_definition_area();
@@ -47,14 +47,14 @@ Drawer::Drawer(
 	double range_x 
 )
 	:
-	m_filled_symbol{ filled_symbol },
-	m_empty_symbol{ empty_symbol },
-	m_rows{ rows },
-	m_columns{ columns },
-	m_minimum_x{ minimum_x },
-	m_range_x{ range_x },
-	m_minimum_y{ minimum_y },
-	m_range_y{ range_y }
+	m_filled_symbol { filled_symbol },
+	m_empty_symbol  { empty_symbol },
+	m_rows          { rows },
+	m_columns       { columns },
+	m_minimum_x     { minimum_x },
+	m_range_x       { range_x },
+	m_minimum_y     { minimum_y },
+	m_range_y       { range_y }
 {
 	create_empty_field();
 	create_definition_area();
