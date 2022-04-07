@@ -45,9 +45,6 @@
     <ClCompile Include="Shape\AngularShape\Star.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Math\MathFunctions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shape\IShape.h">
@@ -75,9 +72,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Shape\AngularShape\Star.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\MathFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

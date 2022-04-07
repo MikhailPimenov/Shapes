@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 
-#include "../Math/MathFunctions.h"
+//#include "../Math/MathFunctions.h"
 #include "../Point/Point.h"
 #include "../Shape/AngularShape/AngularShape.h"
 #include "../Shape/Circle/Circle.h"

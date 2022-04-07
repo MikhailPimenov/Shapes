@@ -139,7 +139,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Math\MathFunctions.cpp" />
     <ClCompile Include="Shape\AngularShape\AngularShape.cpp" />
     <ClCompile Include="Shape\Circle\Circle.cpp" />
     <ClCompile Include="Drawer\Drawer.cpp" />
@@ -152,7 +151,6 @@
     <ClCompile Include="Shape\AngularShape\Star.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Math\MathFunctions.h" />
     <ClInclude Include="Shape\AngularShape\AngularShape.h" />
     <ClInclude Include="Shape\Circle\Circle.h" />
     <ClInclude Include="Drawer\Drawer.h" />
