@@ -1,7 +1,6 @@
 #include "AngularShape.h"
 
 AngularShape::AngularShape(const Vertices_t& vertices) : m_vertices{vertices} {
-
 }
 
 AngularShape::~AngularShape() {

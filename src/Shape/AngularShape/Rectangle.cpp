@@ -1,16 +1,5 @@
 #include "Rectangle.h"
 
-Rectangle::Rectangle() 
-	: 
-	AngularShape{{ 
-			Point(0.0, 0.0), 
-			Point(10.0, 0.0), 
-			Point(10.0, 8.0), 
-			Point(0.0, 8.0)
-	}} 
-{
-}
-
 Rectangle::Rectangle(
 	const Point& upper_left,
 	double width,
