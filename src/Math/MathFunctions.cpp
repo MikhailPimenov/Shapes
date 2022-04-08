@@ -74,6 +74,6 @@ namespace Math {
 		const double shifted = continuous_coordinate - continuous_minimum;
 		const double ratio = shifted / continuous_range;
 
-		return std::round(static_cast<double>(discrete_range) * ratio);
+		return std::llround(static_cast<double>(discrete_range) * ratio);
 	}
 };

@@ -246,7 +246,7 @@ void Drawer::draw_horizontal_line(const Point& first, const Point& second, char 
 		const double y = Math::get_y_from_x_for_line(m_area_x[column], first, second);
 		const std::size_t row = get_row_from_y(y);
 
-		if (0u <= row && row < m_rows) 
+		if (row < m_rows) 
 			m_field[row][column] = filled_symbol;
 	}
 }
@@ -257,7 +257,7 @@ void Drawer::draw_vertical_line(const Point& first, const Point& second, char fi
 		const double x = Math::get_x_from_y_for_line(m_area_y[row], first, second);
 		const std::size_t column = get_column_from_x(x);
 
-		if (0u <= column && column < m_columns) 
+		if (column < m_columns) 
 			m_field[row][column] = filled_symbol;
 	}
 }
