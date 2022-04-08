@@ -171,6 +171,7 @@ private:
 	/// </summary>
 	void create_definition_area();
 
+
 	/// <summary>
 	/// Calculates continuous value for current column
 	/// on the field. It is where this column is
@@ -226,6 +227,7 @@ private:
 	/// </returns>
 	std::size_t get_column_from_x(double x) const;
 
+
 	/// <summary>
 	/// Places line between two points on the field using given symbol.
 	/// Order of the points does not matter
@@ -276,10 +278,65 @@ private:
 	void draw_vertical_line(const Point& first, const Point& second, char filled_symbol);   
 
 
+	/// <summary>
+	/// Calculates vertical range for rows between two given points
+	/// including these points: the very first row to begin with and 
+	/// the row after the last row. The order of points does not matter
+	/// </summary>
+	/// <param name="first">
+	/// First point, contains two coordinates
+	/// </param>
+	/// <param name="second">
+	/// Second point, contains two coordinates
+	/// </param>
+	/// <returns>
+	/// Object with two unsigned integers: row to begin with
+	/// and row which goes after the last row included in range
+	/// </returns>
 	Range get_begin_and_end_rows(const Point& first, const Point& second);
+
+	/// <summary>
+	/// Calculates horizontal range for columns between two given points
+	/// including these points: the very first column to begin with and 
+	/// the column after the last column. The order of points does not matter
+	/// </summary>
+	/// <param name="first">
+	/// First point, contains two coordinates
+	/// </param>
+	/// <param name="second">
+	/// Second point, contains two coordinates
+	/// </param>
+	/// <returns>
+	/// Object with two unsigned integers: column to begin with
+	/// and column which goes after the last column included in range
+	/// </returns>
 	Range get_begin_and_end_columns(const Point& first, const Point& second);
 
+
+	/// <summary>
+	/// Places the shape with angles on the field using symbol 
+	/// </summary>
+	/// <param name="shape">
+	/// Shape with angles to be placed on the field. Contains method
+	/// to provide access to its vertices in some order
+	/// </param>
+	/// <param name="filled_symbol">
+	/// A char, symbol which will be used to draw this
+	/// shape on the field
+	/// </param>
 	void draw_angularshape(const AngularShape& shape, char filled_symbol);
+
+	/// <summary>
+	/// Places the shape with angles on the field using symbol 
+	/// </summary>
+	/// <param name="circle">
+	/// Circle to be placed on the field. Contains methods to provide
+	/// access to its center point and its radius
+	/// </param>
+	/// <param name="filled_symbol">
+	/// A char, symbol which will be used to draw this
+	/// circle on the field
+	/// </param>
 	void draw_circle(const Circle& circle, char filled_symbol);
 	
 };
