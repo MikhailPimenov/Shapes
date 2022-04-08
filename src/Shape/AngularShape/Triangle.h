@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 #include "AngularShape.h"
 #include "../../Point/Point.h"
 
