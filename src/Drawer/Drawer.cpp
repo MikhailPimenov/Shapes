@@ -144,7 +144,7 @@ void Drawer::draw_circle(const Circle& circle, char filled_symbol) {
 			const Point point(x, y);
 			const double distance = Math::get_distance(center, point);
 
-			if (Math::is_between(distance, radius - delta / 3.0, radius + delta / 3.0)) {
+			if (Math::is_between(distance, radius - delta / 4.0, radius + delta / 4.0)) {
 				m_field[row][column] = filled_symbol;
 			}
 		}
