@@ -179,9 +179,10 @@ namespace Math {
 	/// <summary>
 	/// Calculates discrete value from continuous value using 
 	/// number of possible discrete values, range of possible continuous
-	/// values and starting continuous value. If continous coordinate
+	/// values and starting continuous value. Mathematically rounds 
+	/// to the nearest integer. If continous coordinate
 	/// is not within definition area for continuous values, zero or
-	/// max discrete coordinate is returned
+	/// max discrete coordinate is returned. 
 	/// </summary>
 	/// <param name="continuous_coordinate">
 	/// A double which is a continuous value to be converted

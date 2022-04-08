@@ -1,6 +1,6 @@
 #include "Circle.h"
 
-Circle::Circle() : m_center { 0.0, 0.0 }, m_radius {} {
+Circle::Circle() : m_center { 0.0, 0.0 }, m_radius { 1.0 } {
 }
 
 Circle::Circle(double x, double y, double radius) : m_center { x, y }, m_radius { radius } {

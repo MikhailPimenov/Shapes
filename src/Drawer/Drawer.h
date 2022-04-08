@@ -30,7 +30,7 @@ namespace DrawerDefaults {
 
 
 /// <summary>
-/// 
+/// Class with field inside and methods to draw all shapes on its field.
 /// </summary>
 class Drawer {
 private:
