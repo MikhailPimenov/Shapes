@@ -12,20 +12,20 @@ using Field_t = std::vector<std::vector<char>>;
 using Area_t  = std::vector<double>;
 
 namespace DrawerDefaults {
-	const extern char filled_symbol;
-	const extern char empty_symbol;
+    extern const char filled_symbol;
+    extern const char empty_symbol;
 
-	const extern std::size_t rows;
-	const extern std::size_t columns;
+	extern const std::size_t rows;
+	extern const std::size_t columns;
 
-	const extern double minimum_x;
-	const extern double range_x;
+	extern const double minimum_x;
+	extern const double range_x;
+	   
+	extern const double minimum_y;
+	extern const double range_y;
 
-	const extern double minimum_y;
-	const extern double range_y;
-
-	const extern double ratio;
-};
+	extern const double ratio;
+};  //  namespace DrawerDefaults
 
 
 
@@ -33,7 +33,7 @@ namespace DrawerDefaults {
 /// Class with field inside and methods to draw all shapes on its field.
 /// </summary>
 class Drawer {
-private:
+ private:
 	char m_filled_symbol;
 	char  m_empty_symbol;
 
@@ -54,9 +54,7 @@ private:
 		std::size_t m_end;
 	};
 
-
-public:
-
+ public:
 	/// <summary>
 	/// Constructs Drawer object with feild inside. 
 	/// Definition area is automatically scaled not 
@@ -148,8 +146,7 @@ public:
 	void print() const;
 
 
-private:
-
+ private:
 	/// <summary>
 	/// Calculates diagonal distance between two neighbour
 	/// points on the field

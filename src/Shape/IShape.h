@@ -5,17 +5,15 @@
 /// should be inherited from this class
 /// </summary>
 class IShape {
-public:
+ public:
+    /// <summary>
+    /// Outputs information about shape to console
+    /// </summary>
+    virtual void print_info() const = 0;
 
-	/// <summary>
-	/// Outputs information about shape to console
-	/// </summary>
-	virtual void print_info() const = 0;
-
-	/// <summary>
-	/// Virtual destructor, provides correct destruction of
-	/// inherited classes
-	/// </summary>
-	virtual ~IShape();
+    /// <summary>
+    /// Virtual destructor, provides correct destruction of
+    /// inherited classes
+    /// </summary>
+    virtual ~IShape();
 };
-

@@ -4,15 +4,16 @@
 #include "../../Point/Point.h"
 
 /// <summary>
-/// Class to store information about circle. 
+/// Class to store information about circle.
 /// Contains center point and radius and methods
 /// to get read-only access to them
 /// </summary>
 class Circle : public IShape {
-private:
+ private:
     Point  m_center;
     double m_radius;
-public:
+
+ public:
     /// <summary>
     /// Default constructor. Creates circle with zero-center
     /// and radius 1.0
