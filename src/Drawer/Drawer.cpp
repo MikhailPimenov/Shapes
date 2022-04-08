@@ -17,7 +17,7 @@ namespace DrawerDefaults {
 
 	//  ratio to make vertical and horizontal gaps between points in console 
 	//  equal to each other (to make circle look like circle, but not like ellips)
-	const double ratio        = 0.575;
+	const double ratio        = 0.45;
 }
 
 
@@ -168,20 +168,32 @@ double Drawer::get_y_from_row(std::size_t row) const {
 	);
 }
 std::size_t Drawer::get_column_from_x(double x) const {
-	return Math::get_discrete_from_continuous_coordinate(
+	const signed long long int column = Math::get_discrete_from_continuous_coordinate(
 		x,
 		m_columns,
 		m_range_x,
 		m_minimum_x
 	);
+	if (column < 0)
+		return 0ull;
+	if (column >= static_cast<signed long long>(m_columns))
+		return m_columns - 1ull;
+
+	return column;
 }
 std::size_t Drawer::get_row_from_y(double y) const {
-	return Math::get_discrete_from_continuous_coordinate(
+	const signed long long int row = Math::get_discrete_from_continuous_coordinate(
 		y,
 		m_rows,
 		m_range_y,
 		m_minimum_y
 	);
+	if (row < 0)
+		return 0ull;
+	if (row >= static_cast<signed long long>(m_rows))
+		return m_rows - 1ull;
+
+	return row;
 }
 
 Drawer::Range Drawer::get_begin_and_end_rows(const Point& first, const Point& second) {

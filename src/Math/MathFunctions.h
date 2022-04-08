@@ -181,8 +181,8 @@ namespace Math {
 	/// number of possible discrete values, range of possible continuous
 	/// values and starting continuous value. Mathematically rounds 
 	/// to the nearest integer. If continous coordinate
-	/// is not within definition area for continuous values, zero or
-	/// max discrete coordinate is returned. 
+	/// is not within definition area for continuous values, negative or
+	/// value greater than maximal discrete coordinate is returned 
 	/// </summary>
 	/// <param name="continuous_coordinate">
 	/// A double which is a continuous value to be converted
@@ -198,13 +198,14 @@ namespace Math {
 	/// </param>
 	/// <param name="continuous_minimum">
 	/// A double which represents shift of continuous values
-	/// relatively zero, it is minimal possible continuous values.
+	/// relatively zero, it is minimal possible continuous value 
+	/// to get not negative result
 	/// </param>
 	/// <returns>
-	/// An unsigned integer which corresponds to continuous value
-	/// with given ranges and shift
+	/// A signed integer which corresponds to continuous value
+	/// with given range and shift
 	/// </returns>
-	std::size_t get_discrete_from_continuous_coordinate(
+	signed long long int get_discrete_from_continuous_coordinate(
 		double continuous_coordinate,
 		std::size_t discrete_range,
 		double continuous_range,
