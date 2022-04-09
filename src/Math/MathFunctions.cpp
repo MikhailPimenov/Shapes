@@ -10,7 +10,6 @@ namespace Math {
 		return (lower < x) && (x < greater);
 	}
 
-
 	double get_delta(double range_x, std::size_t length_x, double range_y, std::size_t length_y) {
 		const double dx = range_x / static_cast<double>(length_x);
 		const double dy = range_y / static_cast<double>(length_y);
@@ -40,8 +39,6 @@ namespace Math {
 		return cotangent_alpha * (y - first.y()) + first.x();
 	}
 
-
-
 	bool is_line_vertical(const Point& first, const Point& second) {
 		return std::abs(first.y() - second.y()) > std::abs(first.x() - second.x());
 	}
@@ -63,8 +60,6 @@ namespace Math {
 
 		return continuous_range * ratio + continuous_minimum;
 	}
-
-
 	signed long long int get_discrete_from_continuous_coordinate(
 		double continuous_coordinate,
 		std::size_t discrete_range,

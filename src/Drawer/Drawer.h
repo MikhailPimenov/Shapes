@@ -9,31 +9,29 @@
 #include "../Shape/IShape.h"
 
 using Field_t = std::vector<std::vector<char>>;
-using Area_t  = std::vector<double>;
+using Area_t = std::vector<double>;
 
 namespace DrawerDefaults {
-    extern const char filled_symbol;
-    extern const char empty_symbol;
+	extern const char filled_symbol;
+	extern const char empty_symbol;
 
 	extern const std::size_t rows;
 	extern const std::size_t columns;
 
 	extern const double minimum_x;
 	extern const double range_x;
-	   
+
 	extern const double minimum_y;
 	extern const double range_y;
 
 	extern const double ratio;
 };  //  namespace DrawerDefaults
 
-
-
 /// <summary>
 /// Class with field inside and methods to draw all shapes on its field.
 /// </summary>
 class Drawer {
- private:
+private:
 	char m_filled_symbol;
 	char  m_empty_symbol;
 
@@ -54,7 +52,7 @@ class Drawer {
 		std::size_t m_end;
 	};
 
- public:
+public:
 	/// <summary>
 	/// Constructs Drawer object with feild inside. 
 	/// Definition area is automatically scaled not 
@@ -114,7 +112,7 @@ class Drawer {
 		std::size_t columns,
 		char filled_symbol,
 		char empty_symbol,
-		double minimum_y, 
+		double minimum_y,
 		double range_y,
 		double minimum_x,
 		double range_x
@@ -131,7 +129,7 @@ class Drawer {
 	/// shape on the field
 	/// </param>
 	void draw(const IShape& shape, char filled_symbol);
-	
+
 	/// <summary>
 	/// Places the shape on the field
 	/// </summary>
@@ -146,7 +144,7 @@ class Drawer {
 	void print() const;
 
 
- private:
+private:
 	/// <summary>
 	/// Calculates diagonal distance between two neighbour
 	/// points on the field
@@ -238,8 +236,8 @@ class Drawer {
 	/// <param name="filled_symbol">
 	/// A char, symbol which will be used to draw line on the field
 	/// </param>
-	void draw_line(const Point& first, const Point& second, char filled_symbol); 
-	
+	void draw_line(const Point& first, const Point& second, char filled_symbol);
+
 	/// <summary>
 	/// Places line between two points on the field using given symbol.
 	/// Order of the points does not matter.
@@ -255,8 +253,8 @@ class Drawer {
 	/// <param name="filled_symbol">
 	/// A char, symbol which will be used to draw line on the field
 	/// </param>
-	void draw_horizontal_line(const Point& first, const Point& second, char filled_symbol);  
-	
+	void draw_horizontal_line(const Point& first, const Point& second, char filled_symbol);
+
 	/// <summary>
 	/// Places line between two points on the field using given symbol.
 	/// Order of the points does not matter.
@@ -272,7 +270,7 @@ class Drawer {
 	/// <param name="filled_symbol">
 	/// A char, symbol which will be used to draw line on the field
 	/// </param>
-	void draw_vertical_line(const Point& first, const Point& second, char filled_symbol);   
+	void draw_vertical_line(const Point& first, const Point& second, char filled_symbol);
 
 
 	/// <summary>
@@ -335,6 +333,4 @@ class Drawer {
 	/// circle on the field
 	/// </param>
 	void draw_circle(const Circle& circle, char filled_symbol);
-	
 };
-

@@ -5,7 +5,7 @@
 /// should be inherited from this class
 /// </summary>
 class IShape {
- public:
+public:
     /// <summary>
     /// Outputs information about shape to console
     /// </summary>

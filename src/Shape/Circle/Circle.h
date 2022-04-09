@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../IShape.h"
 #include "../../Point/Point.h"
+#include "../IShape.h"
 
 /// <summary>
 /// Class to store information about circle.
@@ -9,11 +9,11 @@
 /// to get read-only access to them
 /// </summary>
 class Circle : public IShape {
- private:
-    Point  m_center;
+private:
+    Point m_center;
     double m_radius;
 
- public:
+public:
     /// <summary>
     /// Default constructor. Creates circle with zero-center
     /// and radius 1.0
@@ -57,7 +57,6 @@ class Circle : public IShape {
     /// </summary>
     virtual void print_info() const override;
 
-
     /// <summary>
     /// Provides read-only access to center point of this circle
     /// </summary>
@@ -74,4 +73,3 @@ class Circle : public IShape {
     /// </returns>
     double radius() const;
 };
-
