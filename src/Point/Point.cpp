@@ -7,14 +7,14 @@ Point::Point(double x, double y) : m_x{ x }, m_y{ y } {
 }
 
 double Point::x() const {
-	return m_x;
+    return m_x;
 }
 
 double Point::y() const {
-	return m_y;
+    return m_y;
 }
 
 std::ostream& operator<<(std::ostream& out, const Point& object) {
-	out << "Point(" << object.m_x << ", " << object.m_y << ')';
-	return out;
+    out << "Point(" << object.m_x << ", " << object.m_y << ')';
+    return out;
 }
