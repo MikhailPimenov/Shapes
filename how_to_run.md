@@ -1,0 +1,2 @@
+From src:
+$make run
