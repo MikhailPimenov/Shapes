@@ -1,0 +1,5 @@
+add_library(angularshapelib AngularShape.cpp)
+add_library(rectanglelib Rectangle.cpp)
+add_library(squarelib Square.cpp)
+add_library(starlib Star.cpp)
+add_library(trianglelib Triangle.cpp)

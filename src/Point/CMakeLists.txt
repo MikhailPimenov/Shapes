@@ -1,0 +1,1 @@
+add_library(pointlib Point.cpp)
