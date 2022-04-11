@@ -13,4 +13,16 @@ endif()
 
 add_subdirectory(src)
 
-target_link_libraries(${PROJECT_NAME} drawerlib mathfunctionslib pointlib ishapelib angularshapelib squarelib starlib rectanglelib trianglelib circlelib)
+target_link_libraries(
+    ${PROJECT_NAME}
+    drawerlib
+    mathfunctionslib
+    pointlib
+    ishapelib
+    angularshapelib
+    squarelib
+    starlib
+    rectanglelib
+    trianglelib
+    circlelib
+)
